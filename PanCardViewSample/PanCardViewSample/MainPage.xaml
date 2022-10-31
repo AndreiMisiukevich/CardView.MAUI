@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:PanCardViewSample"
+             xmlns:cards="clr-namespace:PanCardView;assembly=PanCardView"
+             xmlns:controls="clr-namespace:PanCardView.Controls;assembly=PanCardView"
+             xmlns:proc="clr-namespace:PanCardView.Processors;assembly=PanCardView"
+             x:Class="PanCardViewSample.MainPage">
+
+    <ContentPage.BindingContext>
+        <local:CardsSampleViewModel/>
+    </ContentPage.BindingContext>
+
+    <cards:CarouselView 
+        ItemsSource="{Binding Items}"
+        SlideShowDuration="3500"
+        SelectedIndex="{Binding CurrentIndex}">
+
+        <x:Arguments>
+            <proc:CarouselProcessor ScaleFactor="0.5" OpacityFactor="0" RotationFactor="0.1" />
+        </x:Arguments>
+
+        <cards:CarouselView.ItemTemplate>
+            <DataTemplate>
+                <ContentView>
+                    <Frame 
+                        VerticalOptions="Center"
+                        HorizontalOptions="Center"
+                        HeightRequest="300"
+                        WidthRequest="300"
+                        Padding="0" 
+                        HasShadow="false"
+                        IsClippedToBounds="true"
+                        CornerRadius="10"
+                        BackgroundColor="{Binding Color}">
+                        
+                        <Image Source="{Binding Source}"/> 
+                        
+                    </Frame>
+                </ContentView>
+            </DataTemplate>
+        </cards:CarouselView.ItemTemplate>
+        
+        <controls:IndicatorsControl ToFadeDuration="1500"/>
+        <controls:LeftArrowControl ToFadeDuration="2500"/>
+        <controls:RightArrowControl ToFadeDuration="2500"/>
+    </cards:CarouselView>
+
+</ContentPage>
+
