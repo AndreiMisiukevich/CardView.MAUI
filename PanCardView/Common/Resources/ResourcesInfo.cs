@@ -6,10 +6,10 @@ namespace PanCardView.Resources
     public static class ResourcesInfo
     {
         private const string ResourcesPath = "PanCardView.Resources";
-        private const string WhiteRightArrowResourceName = "rightArrow.png";
-        private const string WhiteLeftArrowResourceName = "leftArrow.png";
-        private const string BlackRightArrowResourceName = "rightArrowBlack.png";
-        private const string BlackLeftArrowResourceName = "leftArrowBlack.png";
+        private const string WhiteRightArrowResourceName = "right_arrow.png";
+        private const string WhiteLeftArrowResourceName = "left_arrow.png";
+        private const string BlackRightArrowResourceName = "right_arrow_black.png";
+        private const string BlackLeftArrowResourceName = "left_arrow_black.png";
 
         private static Assembly ResourceAssembly => typeof(ResourcesInfo).GetTypeInfo().Assembly;
 
@@ -22,6 +22,6 @@ namespace PanCardView.Resources
         public static ImageSource BlackLeftArrowImageSource => FromResource(BlackLeftArrowResourceName);
 
         private static ImageSource FromResource(string resourceName)
-            => ImageSource.FromResource($"{ResourcesPath}.{resourceName}", ResourceAssembly);
+            => resourceName;
     }
 }

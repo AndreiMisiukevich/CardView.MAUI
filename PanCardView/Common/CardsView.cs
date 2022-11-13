@@ -19,6 +19,8 @@ using PanCardView.Delegates;
 using System.ComponentModel;
 using Microsoft.Maui.Layouts;
 
+using AbsoluteLayout = Microsoft.Maui.Controls.Compatibility.AbsoluteLayout;
+
 namespace PanCardView
 {
     public class CardsView : AbsoluteLayout
@@ -130,7 +132,7 @@ namespace PanCardView
 
         public static readonly BindableProperty OppositePanDirectionDisablingThresholdProperty = BindableProperty.Create(nameof(OppositePanDirectionDisablingThreshold), typeof(double), typeof(CardsView), double.PositiveInfinity);
 
-        public static readonly BindableProperty SwipeThresholdTimeProperty = BindableProperty.Create(nameof(SwipeThresholdTime), typeof(TimeSpan), typeof(CardsView), TimeSpan.FromMilliseconds(Device.RuntimePlatform == Device.Android ? 100 : 60));
+        public static readonly BindableProperty SwipeThresholdTimeProperty = BindableProperty.Create(nameof(SwipeThresholdTime), typeof(TimeSpan), typeof(CardsView), TimeSpan.FromMilliseconds(DeviceInfo.Platform == DevicePlatform.Android ? 100 : 60));
 
         public static readonly BindableProperty UserInteractedCommandProperty = BindableProperty.Create(nameof(UserInteractedCommand), typeof(ICommand), typeof(CardsView), null);
 
@@ -577,8 +579,6 @@ namespace PanCardView
             set => SetValue(ProcessorDiffProperty, value);
         }
 
-        public object this[int index] => ItemsSource?.FindValue(index);
-
         [EditorBrowsable(EditorBrowsableState.Never)]
         public static void Preserve()
         {
@@ -636,7 +636,7 @@ namespace PanCardView
                     return;
                 case GestureStatus.Canceled:
                 case GestureStatus.Completed:
-                    if (Device.RuntimePlatform == Device.Android)
+                    if (DeviceInfo.Platform == DevicePlatform.Android)
                     {
                         OnTouchChanged(diff, oppositeDirectionDiff, true);
                         SetParentTouchHandlerIfNeeded(statusType);
@@ -668,7 +668,7 @@ namespace PanCardView
 
                 var isLeftSwiped = swipeDirection == ItemSwipeDirection.Left;
                 var haveItems = (isLeftSwiped && NextViews.Any()) || (!isLeftSwiped && PrevViews.Any());
-                var isAndroid = Device.RuntimePlatform == Device.Android;
+                var isAndroid = DeviceInfo.Platform == DevicePlatform.Android;
 
                 var parentCardsViewOption = new Optional<CardsView>(FindParentElement<CardsView>());
                 if (!haveItems && parentCardsViewOption?.Value != null)
@@ -727,6 +727,8 @@ namespace PanCardView
 
             SetAllViews(false);
         }
+
+        public object GetItemByIndex(int index) => ItemsSource?.FindValue(index);
 
         protected virtual void SetAllViews(bool shouldCleanUnprocessingChildren)
         {
@@ -860,7 +862,7 @@ namespace PanCardView
                 return;
             }
 
-            SelectedItem = this[index];
+            SelectedItem = GetItemByIndex(index);
         }
 
         protected virtual async void AdjustSlideShow(bool isForceStop = false)
@@ -1057,7 +1059,7 @@ namespace PanCardView
 
         private void SetPanGesture(bool isForceRemoving = false)
         {
-            if (Device.RuntimePlatform != Device.Android)
+            if (DeviceInfo.Platform != DevicePlatform.Android)
             {
                 _panGesture.PanUpdated -= OnPanUpdated;
                 GestureRecognizers.Remove(_panGesture);
@@ -1163,7 +1165,7 @@ namespace PanCardView
             _interactions.Add(gestureId, InteractionType.User);
 
             FireUserInteracted(UserInteractionStatus.Started, CurrentDiff, SelectedIndex);
-            if (Device.RuntimePlatform != Device.Android)
+            if (DeviceInfo.Platform != DevicePlatform.Android)
             {
                 IsUserInteractionRunning = true;
             }
@@ -1673,7 +1675,7 @@ namespace PanCardView
                 return null;
             }
 
-            return this[index];
+            return GetItemByIndex(index);
         }
 
         private void RemoveRangeViewsPool(IView[] views)
@@ -1702,7 +1704,7 @@ namespace PanCardView
                 index = index.ToCyclicalIndex(ItemsCount);
             }
             return index >= 0 && index < ItemsCount
-                ? this[index]
+                ? GetItemByIndex(index)
                     : null;
         }
 
@@ -1777,7 +1779,7 @@ namespace PanCardView
                 var currentItem = GetItem(CurrentView);
                 for (var i = 0; i < ItemsCount; ++i)
                 {
-                    if (Equals(this[i], currentItem))
+                    if (Equals(GetItemByIndex(index), currentItem))
                     {
                         index = i;
                         break;
@@ -1894,7 +1896,7 @@ namespace PanCardView
             _viewsChildrenCount -= views.Length;
             foreach (var view in views)
             {
-                ExecutePreventException(() => Children.Remove(view));
+                ExecutePreventException(() => Children.Remove(view as View));
                 CleanView(view as View);
             }
 
@@ -1924,18 +1926,18 @@ namespace PanCardView
 
         private void InvokeOnMainThreadIfNeeded(Action action)
         {
-            if (!Device.IsInvokeRequired)
+            if (!Dispatcher.IsDispatchRequired)
             {
                 action.Invoke();
                 return;
             }
-            Device.BeginInvokeOnMainThread(action);
+            Dispatcher.Dispatch(action);
         }
 
         private Task InvokeOnMainThreadIfNeededAsync(Func<Task> action)
-            => !Device.IsInvokeRequired
+            => !Dispatcher.IsDispatchRequired
             ? action.Invoke()
-            : Device.InvokeOnMainThreadAsync(action);
+            : Dispatcher.DispatchAsync(action);
 
         private void ExecutePreventException(Action action)
         {
@@ -1945,7 +1947,7 @@ namespace PanCardView
             }
             catch
             {
-                Device.BeginInvokeOnMainThread(() =>
+                Dispatcher.Dispatch(() =>
                 {
                     try
                     {
@@ -1962,7 +1964,7 @@ namespace PanCardView
         //https://github.com/AndreiMisiukevich/CardView/issues/335
         private void PerformUWPFrontViewProcessorHandlePanChanged(double value, AnimationDirection direction)
         {
-            if (Device.RuntimePlatform != Device.UWP)
+            if (DeviceInfo.Platform != DevicePlatform.WinUI)
             {
                 return;
             }

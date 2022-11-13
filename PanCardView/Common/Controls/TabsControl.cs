@@ -12,6 +12,8 @@ using Microsoft.Maui;
 using static System.Math;
 using Microsoft.Maui.Layouts;
 
+using AbsoluteLayout = Microsoft.Maui.Controls.Compatibility.AbsoluteLayout;
+
 namespace PanCardView.Controls
 {
     public class TabsControl : AbsoluteLayout
@@ -85,7 +87,7 @@ namespace PanCardView.Controls
 
         public TabsControl()
         {
-            Children.Add(ItemsStackLayout); 
+            Children.Add(ItemsStackLayout);
             AbsoluteLayout.SetLayoutBounds(ItemsStackLayout, new Rect(0, 0, 1, 1));
             AbsoluteLayout.SetLayoutFlags(ItemsStackLayout, AbsoluteLayoutFlags.All);
 
@@ -208,7 +210,7 @@ namespace PanCardView.Controls
             set => SetValue(StripePositionProperty, value);
         }
 
-        public object this[int index] => ItemsSource?.FindValue(index);
+        public object GetItemByIndex(int index) => ItemsSource?.FindValue(index);
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         public static void Preserve()

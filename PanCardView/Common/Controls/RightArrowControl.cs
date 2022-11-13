@@ -2,6 +2,8 @@
 using System.ComponentModel;
 using static PanCardView.Resources.ResourcesInfo;
 
+using AbsoluteLayout = Microsoft.Maui.Controls.Compatibility.AbsoluteLayout;
+
 namespace PanCardView.Controls
 {
     public class RightArrowControl : ArrowControl

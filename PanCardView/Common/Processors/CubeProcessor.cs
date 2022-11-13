@@ -27,7 +27,7 @@ namespace PanCardView.Processors
                 var margin = value - Sign(value) * cardsView.GetSize(view) * 0.5 * (1 - view.Scale);
                 var rotation = value * Angle90 / cardsView.GetSize();
 
-                if (Device.RuntimePlatform == Device.Android)
+                if (DeviceInfo.Platform == DevicePlatform.Android)
                 {
                     var anchor = .5 * (1 - Sin(rotation * PI / Angle180));
                     if (cardsView.IsHorizontalOrientation)

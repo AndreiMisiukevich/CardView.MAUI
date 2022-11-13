@@ -11,6 +11,8 @@ using System.ComponentModel;
 using System.Collections.Specialized;
 using Microsoft.Maui.Layouts;
 
+using AbsoluteLayout = Microsoft.Maui.Controls.Compatibility.AbsoluteLayout;
+
 namespace PanCardView.Controls
 {
     public class IndicatorsControl : StackLayout
@@ -166,12 +168,12 @@ namespace PanCardView.Controls
             set => SetValue(ToFadeDurationProperty, value);
         }
 
-        public object this[int index] => ItemsSource?.FindValue(index);
-
         [EditorBrowsable(EditorBrowsableState.Never)]
         public static void Preserve()
         {
         }
+
+        public object GetItemByIndex(int index) => ItemsSource?.FindValue(index);
 
         protected override void OnParentSet()
         {

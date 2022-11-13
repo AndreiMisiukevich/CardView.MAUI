@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 using Microsoft.Maui.Layouts;
 
+using AbsoluteLayout = Microsoft.Maui.Controls.Compatibility.AbsoluteLayout;
+
 namespace PanCardView.Controls
 {
     public class ArrowControl : ContentView
@@ -129,10 +131,8 @@ namespace PanCardView.Controls
             Content = ContentImage = new Image
             {
                 Aspect = Aspect.AspectFill,
-                VerticalOptions = LayoutOptions.FillAndExpand,
-                HorizontalOptions = LayoutOptions.FillAndExpand,
                 InputTransparent = true,
-                Source = ImageSource
+                Source = ImageSource,
             };
 
             WidthRequest = 40;
