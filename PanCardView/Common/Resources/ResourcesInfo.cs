@@ -1,11 +1,10 @@
-﻿using Microsoft.Maui;
-using System.Reflection;
+﻿using System.Reflection;
 
 namespace PanCardView.Resources
 {
     public static class ResourcesInfo
     {
-        private const string ResourcesPath = "PanCardView.Resources";
+        private const string ResourcesPath = "PanCardView.Common.Resources";
         private const string WhiteRightArrowResourceName = "right_arrow.png";
         private const string WhiteLeftArrowResourceName = "left_arrow.png";
         private const string BlackRightArrowResourceName = "right_arrow_black.png";
@@ -22,6 +21,6 @@ namespace PanCardView.Resources
         public static ImageSource BlackLeftArrowImageSource => FromResource(BlackLeftArrowResourceName);
 
         private static ImageSource FromResource(string resourceName)
-            => resourceName;
+            => ImageSource.FromResource($"{ResourcesPath}.{resourceName}", ResourceAssembly);
     }
 }
