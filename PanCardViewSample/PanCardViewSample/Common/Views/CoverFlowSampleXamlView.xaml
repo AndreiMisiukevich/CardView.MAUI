@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:PanCardViewSample.ViewModels"
+    xmlns:cards="clr-namespace:PanCardView;assembly=PanCardView"
+    xmlns:controls="clr-namespace:PanCardView.Controls;assembly=PanCardView"
+    xmlns:res="clr-namespace:PanCardView.Resources;assembly=PanCardView"
+    xmlns:proc="clr-namespace:PanCardView.Processors;assembly=PanCardView"
+    x:Class="PanCardViewSample.Views.CoverFlowSampleXamlView"
+    BackgroundColor="White"
+    Title="CoverFlow Xaml">
+
+    <ContentPage.BindingContext>
+        <viewModels:CardsSampleViewModel/>
+    </ContentPage.BindingContext>
+
+    <StackLayout>
+            <cards:CoverFlowView 
+                PositionShiftValue="145"
+                IsCyclical="false"
+                SelectedIndex="{Binding CurrentIndex}"
+                ItemsSource="{Binding Items}">
+
+                <x:Arguments>
+                    <proc:CoverFlowProcessor ScaleFactor="0.75" OpacityFactor="0.25" />
+                </x:Arguments>
+
+            <cards:CoverFlowView.ItemTemplate>
+                <DataTemplate>
+                   <Frame
+                       Margin="80"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Fill"
+                       Padding="0" 
+                       HasShadow="false"
+                       IsClippedToBounds="true"
+                       CornerRadius="10"
+                       BackgroundColor="{Binding Color}">
+                            <Image Source="{Binding Source}" Aspect="AspectFill"/> 
+                        </Frame>
+                </DataTemplate>
+            </cards:CoverFlowView.ItemTemplate>
+
+            <controls:LeftArrowControl
+                AbsoluteLayout.LayoutBounds="0, 1, -1, -1"
+                ImageSource="{Static res:ResourcesInfo.BlackLeftArrowImageSource}" />
+            <controls:RightArrowControl
+                AbsoluteLayout.LayoutBounds="1, 1, -1, -1"
+                ImageSource="{Static res:ResourcesInfo.BlackRightArrowImageSource}"/>
+
+        </cards:CoverFlowView>
+        
+        <Button Text="TO LAST" Command="{Binding GoToLastCommand}" />
+        
+    </StackLayout>
+    
+</ContentPage>

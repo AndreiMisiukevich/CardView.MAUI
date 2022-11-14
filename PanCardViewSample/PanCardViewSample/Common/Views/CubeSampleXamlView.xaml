@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:PanCardViewSample.ViewModels"
+    xmlns:cards="clr-namespace:PanCardView;assembly=PanCardView"
+    xmlns:controls="clr-namespace:PanCardView.Controls;assembly=PanCardView"
+    x:Class="PanCardViewSample.Views.CubeSampleXamlView"
+    BackgroundColor="Black"
+    Title="Cube Xaml">
+
+    <ContentPage.BindingContext>
+        <viewModels:CardsSampleViewModel/>
+    </ContentPage.BindingContext>
+
+    <StackLayout Spacing="50" Padding="0, 0, 0, 50">
+        <ContentView HeightRequest="40" HorizontalOptions="FillAndExpand">
+            <controls:TabsControl
+                StripeColor="Gold"
+                ToFadeDuration="2000"
+                HeightRequest="40"
+                BindingContext="{x:Reference cube}">
+                <controls:TabsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Label HorizontalTextAlignment="Center"
+                               VerticalTextAlignment="Center"
+                               HorizontalOptions="FillAndExpand"
+                               VerticalOptions="CenterAndExpand"
+                               FontSize="24"
+                               FontAttributes="Bold"
+                               TextColor="Gold"
+                               Text="{Binding Title}"/>
+
+                    </DataTemplate>
+                </controls:TabsControl.ItemTemplate>
+            </controls:TabsControl>
+        </ContentView>
+        <cards:CubeView
+                x:Name="cube"
+                VerticalOptions="FillAndExpand"
+                ItemsSource="{Binding Items}"
+                SelectedIndex="{Binding CurrentIndex}">
+            <cards:CubeView.ItemTemplate>
+                <DataTemplate>
+                    <ContentView>
+                        <Frame 
+                            VerticalOptions="Center"
+                            HorizontalOptions="Center"
+                            HeightRequest="300"
+                            WidthRequest="300"
+                            Padding="0" 
+                            HasShadow="false"
+                            BackgroundColor="{Binding Color}"
+                            IsClippedToBounds="true"
+                            CornerRadius="10">
+                            
+                            <Image
+                                Source="{Binding Source}" Aspect="AspectFill"/> 
+                            
+                        </Frame>
+                    </ContentView>
+                </DataTemplate>
+            </cards:CubeView.ItemTemplate>
+        </cards:CubeView>
+        <StackLayout Orientation="Horizontal"
+                     HorizontalOptions="FillAndExpand">
+                <Button TextColor="White"
+                        HorizontalOptions="FillAndExpand"
+                        FontAttributes="Bold"
+                        Text="PREV"
+                        FontSize="30"
+                        Command="{Binding PanPositionChangedCommand}" 
+                        CommandParameter="False"/>
+                <Button TextColor="White"
+                        HorizontalOptions="FillAndExpand"
+                        FontAttributes="Bold"
+                        Text="NEXT"
+                        FontSize="30"
+                        Command="{Binding PanPositionChangedCommand}" 
+                        CommandParameter="True"/>
+        </StackLayout>
+    </StackLayout>
+    
+</ContentPage>

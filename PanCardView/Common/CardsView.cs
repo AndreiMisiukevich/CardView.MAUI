@@ -1715,12 +1715,12 @@ namespace PanCardView
                 return;
             }
 
-            var currentIndex = topView.ZIndex;
-            var backIndex = view.ZIndex;
+            var currentIndex = Children.IndexOf(topView);
+            var backIndex = Children.IndexOf(view);
 
             if (currentIndex < backIndex)
             {
-                view.ZIndex = currentIndex - 1;
+                ExecutePreventException(() => LowerChild(view));
             }
         }
 
