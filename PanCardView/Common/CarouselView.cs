@@ -11,7 +11,10 @@ namespace PanCardView
 
         public CarouselView(IProcessor processor) : base(processor)
         {
-            IsClippedToBounds = true;
+            // NOTE: For some reason setting this to True
+            // Makes the view invisible on Android
+            // Probably it's a MAUI bug
+            //IsClippedToBounds = true;
         }
 
         protected override double DefaultMoveSizePercentage => .3;
