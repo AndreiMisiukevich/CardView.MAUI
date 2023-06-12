@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net7.0-ios;net7.0-android;net7.0-maccatalyst</TargetFrameworks>
+		<TargetFrameworks>net7.0;net7.0-ios;net7.0-android;net7.0-maccatalyst</TargetFrameworks>
 		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows')) and '$(MSBuildRuntimeType)' == 'Full'">$(TargetFrameworks);net7.0-windows10.0.19041</TargetFrameworks>
 		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
 		<!-- <TargetFrameworks>$(TargetFrameworks);net7.0-tizen</TargetFrameworks> -->
@@ -33,7 +33,7 @@
 	    <Title>CardsView.Maui</Title>
 	    <Description>This package allows to create classic CarouselView, CoverFlowView, CardsView and CubeView.</Description>
 	    <PackageIcon>icon.png</PackageIcon>
-	    <Version>0.0.3</Version>
+	    <Version>0.0.4</Version>
 	    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
 	    <PackageTags>carouselview, cardsview, coverflowview, carousel view, cards view, maui, dotnet, carousel, card, cards, cardview, swipeview, swiperview, swipe, tinder swiper, coverflow, cubeView, cube, tabsView, tabView, tabControl, tabsControl, tabs, tab</PackageTags>
 	    <Configurations>Debug;Release</Configurations>
