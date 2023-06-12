@@ -12,3 +12,8 @@ jobs:
         uses: actions/checkout@v2
       - name: Build
         run: dotnet build PanCardView --configuration Release
+      - name: Create Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: release-output
+          path: ./PanCardView/bin/Release/
