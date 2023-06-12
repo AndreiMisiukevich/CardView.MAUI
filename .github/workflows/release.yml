@@ -1,4 +1,4 @@
-name: Daily code format check
+name: Release
 on:
   push:
     branches:
@@ -9,6 +9,6 @@ jobs:
     timeout-minutes: 15
     steps:
       - name: Checkout
-      uses: actions/checkout@v2
+        uses: actions/checkout@v2
       - name: Build
-      run: dotnet build --configuration Release
+        run: dotnet build --configuration Release
