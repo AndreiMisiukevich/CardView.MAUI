@@ -216,7 +216,7 @@ namespace PanCardView
         private bool _isPanStarted;
         private bool _isOppositePanDirectionIssueResolved;
         private bool _isViewInited;
-        private bool _hasRenderer;
+        private bool _hasHandler;
         private Size _parentSize;
         private DateTime _lastPanTime;
         private Task _animationTask;
@@ -712,7 +712,7 @@ namespace PanCardView
                 return;
             }
 
-            if (!_hasRenderer || Parent == null)
+            if (!_hasHandler || Parent == null)
             {
                 return;
             }
@@ -999,8 +999,8 @@ namespace PanCardView
         protected override void OnHandlerChanged()
         {
             base.OnHandlerChanged();
-            _hasRenderer = Handler != null;
-            if (_hasRenderer)
+            _hasHandler = Handler != null;
+            if (_hasHandler)
             {
                 ForceRedrawViews();
                 return;
