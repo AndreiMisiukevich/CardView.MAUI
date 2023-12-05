@@ -1,8 +1,5 @@
 ﻿using PanCardView.Utility;
 using Android.Provider;
-using Android.App;
-using PanCardView.Droid;
-using Android.Runtime;
 
 namespace PanCardView.Droid
 {

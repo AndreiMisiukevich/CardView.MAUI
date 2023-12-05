@@ -1,13 +1,8 @@
-﻿using Microsoft.Maui;
-using PanCardView.Behaviors;
-using System.Threading;
+﻿using PanCardView.Behaviors;
 using PanCardView.Extensions;
 using PanCardView.Utility;
-using System.Threading.Tasks;
 using System.ComponentModel;
 using Microsoft.Maui.Layouts;
-
-using AbsoluteLayout = Microsoft.Maui.Controls.Compatibility.AbsoluteLayout;
 
 namespace PanCardView.Controls
 {

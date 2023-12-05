@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-using System.Collections.Generic;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 
 namespace PanCardViewSample.ViewModels
 {

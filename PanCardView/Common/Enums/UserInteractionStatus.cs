@@ -1,5 +1,4 @@
-﻿using System;
-namespace PanCardView.Enums
+﻿namespace PanCardView.Enums
 {
     public enum UserInteractionStatus
     {

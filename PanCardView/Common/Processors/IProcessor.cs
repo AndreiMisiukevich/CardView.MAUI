@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using PanCardView.Utility;
+﻿using PanCardView.Utility;
 
 namespace PanCardView.Processors
 {

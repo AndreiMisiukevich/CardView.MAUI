@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Specialized;
+﻿using System.Collections.Specialized;
 using System.ComponentModel;
 using PanCardView.Extensions;
 using PanCardView.Processors;
-using Microsoft.Maui;
 using static System.Math;
 
 namespace PanCardView

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace PanCardViewSample.Views
+﻿namespace PanCardViewSample.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class CarouselSampleXamlView : ContentPage

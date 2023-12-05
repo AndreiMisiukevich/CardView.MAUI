@@ -1,7 +1,6 @@
 ﻿using PanCardView;
 using PanCardViewSample.CardsFactory;
 using PanCardViewSample.ViewModels;
-using Microsoft.Maui;
 using Microsoft.Maui.Layouts;
 
 namespace PanCardViewSample.Views

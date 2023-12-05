@@ -1,14 +1,8 @@
 ﻿using PanCardView.Enums;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.Maui;
 using static PanCardView.Processors.Constants;
 using static System.Math;
 using PanCardView.Utility;
 using PanCardView.Extensions;
-using System;
-using System.IO;
 
 namespace PanCardView.Processors
 {

@@ -1,8 +1,5 @@
-﻿using Microsoft.Maui;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using static PanCardView.Resources.ResourcesInfo;
-
-using AbsoluteLayout = Microsoft.Maui.Controls.Compatibility.AbsoluteLayout;
 
 namespace PanCardView.Controls
 {

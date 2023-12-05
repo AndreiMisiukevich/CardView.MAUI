@@ -1,6 +1,4 @@
-﻿using PanCardViewSample.ViewModels;
-
-namespace PanCardViewSample.Views
+﻿namespace PanCardViewSample.Views
 {
     public partial class CoverFlowSampleXamlView : ContentPage
     {

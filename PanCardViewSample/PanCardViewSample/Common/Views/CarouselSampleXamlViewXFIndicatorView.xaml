@@ -12,7 +12,7 @@
     <ContentPage.BindingContext>
         <viewModels:CardsSampleViewModel />
     </ContentPage.BindingContext>
-    <StackLayout>
+    <Grid RowDefinitions="*,Auto">
         <cards:CarouselView IndicatorView="indicatorView"
                             ItemsSource="{Binding Items}"
                             SelectedIndex="{Binding CurrentIndex}"
@@ -47,10 +47,11 @@
             <controls:RightArrowControl ToFadeDuration="2500" />
         </cards:CarouselView>
         <IndicatorView x:Name="indicatorView"
+                       Grid.Row="1"
                        Margin="10"
                        HorizontalOptions="Center"
                        IndicatorColor="LightGray"
                        SelectedIndicatorColor="DarkGray" />
 
-    </StackLayout>
+    </Grid>
 </ContentPage>

@@ -1,31 +1,71 @@
-﻿using Android.Content;
-using Android.Runtime;
+using Android.Content;
 using Android.Views;
-using PanCardView;
-using PanCardView.Droid;
-using System;
+using JetBrains.Annotations;
 using static System.Math;
 using PanCardView.Enums;
 using XView = Microsoft.Maui.Controls.View;
+using Microsoft.Maui.Platform;
+using View = Android.Views.View;
 
-using Microsoft.Maui.Controls.Platform;
-using Microsoft.Maui.Controls.Compatibility.Platform.Android;
+namespace PanCardView;
 
-namespace PanCardView.Droid
+public partial class CardsViewHandler
 {
-#pragma warning disable
-    public class CardsViewRenderer : VisualElementRenderer<CardsView>
-#pragma warning restore
+    private const int SwipeThreshold = 100;
+    private const int SwipeVelocityThreshold = 1200;
+    private CardsView Element => VirtualView as CardsView;
+    
+    protected override LayoutViewGroup CreatePlatformView()
     {
-        public static int SwipeThreshold { get; set; } = 100;
-        public static int SwipeVelocityThreshold { get; set; } = 1200;
+        var viewGroup = new CardsViewLayoutViewGroup(Context!)
+        {
+            CrossPlatformLayout = VirtualView
+        };
+        
+        viewGroup.SetClipChildren(false);
 
-        private bool _panStarted;
+        return viewGroup;
+    }
+    
+    protected override void ConnectHandler(LayoutViewGroup platformView)
+    {
+        base.ConnectHandler(platformView);
+
+        (platformView as CardsViewLayoutViewGroup).PanStarted = false; 
+        Element.AccessibilityChangeRequested += OnAccessibilityChangeRequested;
+    }
+    
+    protected override void DisconnectHandler(LayoutViewGroup platformView)
+    {
+        base.DisconnectHandler(platformView);
+
+        Element.AccessibilityChangeRequested -= OnAccessibilityChangeRequested;
+    }
+    
+    private void OnAccessibilityChangeRequested(object sender, bool isEnabled)
+    {
+        if (sender is XView view)
+        {
+            if (view.Handler?.PlatformView is View nativeView)
+            {
+                nativeView.ImportantForAccessibility = isEnabled
+                    ? ImportantForAccessibility.Auto
+                    : ImportantForAccessibility.NoHideDescendants;
+            }
+        }
+    }
+
+    private sealed class CardsViewLayoutViewGroup : LayoutViewGroup
+    {
         private float? _startX;
         private float? _startY;
         private GestureDetector _gestureDetector;
 
-        public CardsViewRenderer(Context context) : base(context)
+        private CardsView Element => CrossPlatformLayout as CardsView;
+
+        public bool PanStarted;
+
+        public CardsViewLayoutViewGroup([NotNull] Context context) : base(context)
         {
         }
 
@@ -78,38 +118,7 @@ namespace PanCardView.Droid
             HandleDownUpEvents(e);
             return true;
         }
-
-        protected override void OnElementChanged(ElementChangedEventArgs<CardsView> e)
-        {
-            base.OnElementChanged(e);
-            if (e.OldElement != null)
-            {
-                e.OldElement.AccessibilityChangeRequested -= OnAccessibilityChangeRequested;
-            }
-
-            if (e.NewElement != null)
-            {
-                _panStarted = false;
-                Element.AccessibilityChangeRequested += OnAccessibilityChangeRequested;
-            }
-        }
-
-        private void OnAccessibilityChangeRequested(object sender, bool isEnabled)
-        {
-            if (sender is XView view)
-            {
-#pragma warning disable
-                var nativeView = Microsoft.Maui.Controls.Compatibility.Platform.Android.Platform.GetRenderer(view)?.View;
-#pragma warning restore
-                if (nativeView != null)
-                {
-                    nativeView.ImportantForAccessibility = isEnabled
-                        ? ImportantForAccessibility.Auto
-                        : ImportantForAccessibility.NoHideDescendants;
-                }
-            }
-        }
-
+        
         private void DetectEvent(MotionEvent ev)
         {
             if (ev.PointerCount > 1)
@@ -187,16 +196,16 @@ namespace PanCardView.Droid
             _startY = ev.GetY();
 
             UpdatePan(GestureStatus.Started);
-            _panStarted = true;
+            PanStarted = true;
         }
 
         private void HandleUpCancelEvent(GestureStatus status, double xDelta, double yDelta)
         {
-            if (!_panStarted)
+            if (!PanStarted)
             {
                 return;
             }
-            _panStarted = false;
+            PanStarted = false;
 
             UpdatePan(status, xDelta, yDelta);
 
@@ -222,7 +231,7 @@ namespace PanCardView.Droid
         => _gestureDetector = new GestureDetector(Context, new CardsGestureListener(OnSwiped));
     }
 
-    public class CardsGestureListener : GestureDetector.SimpleOnGestureListener
+    private sealed class CardsGestureListener : GestureDetector.SimpleOnGestureListener
     {
         private readonly Action<ItemSwipeDirection> _onSwiped;
 
@@ -238,16 +247,16 @@ namespace PanCardView.Droid
             var absDiffY = Abs(diffY);
 
             if (absDiffX > absDiffY &&
-                absDiffX > CardsViewRenderer.SwipeThreshold &&
-                Abs(velocityX) > CardsViewRenderer.SwipeVelocityThreshold)
+                absDiffX > SwipeThreshold &&
+                Abs(velocityX) > SwipeVelocityThreshold)
             {
                 _onSwiped?.Invoke(diffX < 0 ? ItemSwipeDirection.Left : ItemSwipeDirection.Right);
                 return true;
             }
 
             if (absDiffY >= absDiffX &&
-               absDiffY > CardsViewRenderer.SwipeThreshold &&
-               Abs(velocityY) > CardsViewRenderer.SwipeVelocityThreshold)
+               absDiffY > SwipeThreshold &&
+               Abs(velocityY) > SwipeVelocityThreshold)
             {
                 _onSwiped?.Invoke(diffY < 0 ? ItemSwipeDirection.Up : ItemSwipeDirection.Down);
                 return true;

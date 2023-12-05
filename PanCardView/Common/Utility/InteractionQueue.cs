@@ -1,7 +1,4 @@
-﻿using System;
-using PanCardView.Enums;
-using System.Collections.Generic;
-using System.Linq;
+﻿using PanCardView.Enums;
 
 namespace PanCardView.Utility
 {
