@@ -3,23 +3,14 @@ using PanCardView.Enums;
 using PanCardView.Extensions;
 using PanCardView.Processors;
 using PanCardView.Utility;
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using Microsoft.Maui;
 using static System.Math;
-using System.Threading;
-using System.Runtime.CompilerServices;
 using PanCardView.EventArgs;
 using PanCardView.Delegates;
 using System.ComponentModel;
 using Microsoft.Maui.Layouts;
-
-using AbsoluteLayout = Microsoft.Maui.Controls.Compatibility.AbsoluteLayout;
 
 namespace PanCardView
 {
@@ -1720,7 +1711,7 @@ namespace PanCardView
 
             if (currentIndex < backIndex)
             {
-                ExecutePreventException(() => LowerChild(view));
+                ExecutePreventException(() => view.ZIndex--);
             }
         }
 

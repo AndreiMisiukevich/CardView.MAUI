@@ -1,5 +1,4 @@
 ﻿using PanCardView.Enums;
-using PanCardView.Utility;
 
 namespace PanCardView.EventArgs
 {

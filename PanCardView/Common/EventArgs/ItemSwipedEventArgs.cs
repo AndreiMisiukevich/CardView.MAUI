@@ -1,5 +1,4 @@
-﻿using System;
-using PanCardView.Enums;
+﻿using PanCardView.Enums;
 namespace PanCardView.EventArgs
 {
     public class ItemSwipedEventArgs : System.EventArgs

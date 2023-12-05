@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Linq;
-using Microsoft.Maui;
+﻿using System.Collections.Specialized;
 
 namespace PanCardView.Utility
 {

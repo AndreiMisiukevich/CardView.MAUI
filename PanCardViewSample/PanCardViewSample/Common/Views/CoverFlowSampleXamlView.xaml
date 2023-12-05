@@ -15,7 +15,7 @@
         <viewModels:CardsSampleViewModel/>
     </ContentPage.BindingContext>
 
-    <StackLayout>
+    <Grid RowDefinitions="*,Auto">
             <cards:CoverFlowView 
                 PositionShiftValue="145"
                 IsCyclical="false"
@@ -51,8 +51,8 @@
 
         </cards:CoverFlowView>
         
-        <Button Text="TO LAST" Command="{Binding GoToLastCommand}" />
+        <Button Grid.Row="1" Text="TO LAST" Command="{Binding GoToLastCommand}" />
         
-    </StackLayout>
+    </Grid>
     
 </ContentPage>

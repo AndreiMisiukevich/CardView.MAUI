@@ -1,9 +1,7 @@
-﻿using Microsoft.Maui.Controls.Compatibility.Hosting;
-using PanCardView;
-using PanCardView.Controls;
+﻿using PanCardView.Controls;
+#if ANDROID
 using PanCardView.Utility;
-using CarouselView = PanCardView.CarouselView;
-
+#endif
 
 namespace PanCardView
 {
@@ -24,15 +22,12 @@ namespace PanCardView
             TabsControl.Preserve();
 
 #if ANDROID
-            DependencyService.RegisterSingleton<IAnimationsChecker>(new PanCardView.Droid.AnimationsChecker());
+            DependencyService.RegisterSingleton<IAnimationsChecker>(new Droid.AnimationsChecker());
 #endif
-
-            return builder.UseMauiCompatibility().ConfigureMauiHandlers((handlers) => {
-#if ANDROID
-                handlers.AddCompatibilityRenderer(typeof(CardsView), typeof(PanCardView.Droid.CardsViewRenderer));
-#endif
-#if IOS
-                handlers.AddCompatibilityRenderer(typeof(CardsView), typeof(PanCardView.iOS.CardsViewRenderer));
+            return builder.ConfigureMauiHandlers(handlers =>
+            {
+#if ANDROID || IOS         
+                handlers.AddHandler(typeof(CardsView), typeof(CardsViewHandler));
 #endif
             });
         }

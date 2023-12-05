@@ -1,6 +1,4 @@
-﻿using Microsoft.Maui;
-
-namespace PanCardView.Controls.Styles
+﻿namespace PanCardView.Controls.Styles
 {
     public static class DefaultIndicatorItemStyles
     {

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace PanCardView.Enums
+﻿namespace PanCardView.Enums
 {
     [Flags]
     public enum InteractionType

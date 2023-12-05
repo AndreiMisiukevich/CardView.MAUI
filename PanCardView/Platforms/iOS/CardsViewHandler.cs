@@ -1,27 +1,67 @@
-﻿using Foundation;
-using PanCardView;
-using PanCardView.iOS;
 using UIKit;
 using PanCardView.Enums;
-using System.ComponentModel;
+using Microsoft.Maui.Handlers;
 using static System.Math;
 
+using Microsoft.Maui.Platform;
 
-using Microsoft.Maui.Controls.Platform;
-using Microsoft.Maui.Controls.Compatibility.Platform.iOS;
+namespace PanCardView;
 
-namespace PanCardView.iOS
+public partial class CardsViewHandler
 {
-#pragma warning disable
-    public class CardsViewRenderer : VisualElementRenderer<CardsView>
-#pragma warning restore
+    private CardsView Element => VirtualView as CardsView;
+    
+    protected override LayoutView CreatePlatformView() =>
+        new CardsViewLayoutView
+        {
+            CrossPlatformLayout = VirtualView
+        };
+
+    protected override void ConnectHandler(LayoutView platformView)
+    {
+        base.ConnectHandler(platformView);
+        
+        (platformView as CardsViewLayoutView)?.SetSwipeGestures();
+        Element.AccessibilityChangeRequested += OnAccessibilityChangeRequested;
+    }
+
+    protected override void DisconnectHandler(LayoutView platformView)
+    {
+        base.DisconnectHandler(platformView);
+        Element.AccessibilityChangeRequested -= OnAccessibilityChangeRequested;
+    }
+    
+    private static void MapIsVerticalSwipeEnabled(LayoutHandler handler, CardsView cardsView)
+    {
+        (handler.PlatformView as CardsViewLayoutView)?.SetSwipeGestures();
+    }
+
+    private static void MapIsUserInteractionEnabled(LayoutHandler handler, CardsView cardsView)
+    {
+        (handler.PlatformView as CardsViewLayoutView)?.SetSwipeGestures();
+    }
+    
+    private void OnAccessibilityChangeRequested(object sender, bool isEnabled)
+    {
+        if (sender is View view)
+        {
+            if (view.Handler?.PlatformView is UIView nativeView)
+            {
+                nativeView.AccessibilityElementsHidden = !isEnabled;
+            }
+        }
+    }
+
+    private sealed class CardsViewLayoutView : LayoutView
     {
         private UISwipeGestureRecognizer _leftSwipeGesture;
         private UISwipeGestureRecognizer _rightSwipeGesture;
         private UISwipeGestureRecognizer _upSwipeGesture;
         private UISwipeGestureRecognizer _downSwipeGesture;
+        
+        private CardsView Element => CrossPlatformLayout as CardsView;
 
-        public CardsViewRenderer()
+        public CardsViewLayoutView()
         {
             _leftSwipeGesture = new UISwipeGestureRecognizer(OnSwiped)
             {
@@ -52,30 +92,15 @@ namespace PanCardView.iOS
             }
         }
 
-        protected override void OnElementChanged(ElementChangedEventArgs<CardsView> e)
+        public void SetSwipeGestures()
         {
-            base.OnElementChanged(e);
-            if (e.OldElement != null)
-            {
-                e.OldElement.AccessibilityChangeRequested -= OnAccessibilityChangeRequested;
-            }
-
-            if (e.NewElement != null)
-            {
-                SetSwipeGestures();
-                Element.AccessibilityChangeRequested += OnAccessibilityChangeRequested;
-            }
-        }
-
-        protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            base.OnElementPropertyChanged(sender, e);
-            if (e.PropertyName == CardsView.IsVerticalSwipeEnabledProperty.PropertyName
-                || e.PropertyName == CardsView.IsUserInteractionEnabledProperty.PropertyName)
-            {
-                SetSwipeGestures();
-                return;
-            }
+            var shouldRemoveAllSwipes = !(Element?.IsUserInteractionEnabled ?? false);
+            var shouldRemoveVerticalSwipes = !(Element?.IsVerticalSwipeEnabled ?? false);
+        
+            ResetSwipeGestureRecognizer(_leftSwipeGesture, shouldRemoveAllSwipes);
+            ResetSwipeGestureRecognizer(_rightSwipeGesture, shouldRemoveAllSwipes);
+            ResetSwipeGestureRecognizer(_upSwipeGesture, shouldRemoveAllSwipes || shouldRemoveVerticalSwipes);
+            ResetSwipeGestureRecognizer(_downSwipeGesture, shouldRemoveAllSwipes || shouldRemoveVerticalSwipes);
         }
 
         protected override void Dispose(bool disposing)
@@ -94,7 +119,7 @@ namespace PanCardView.iOS
             base.Dispose(disposing);
         }
 
-        protected virtual void ResetSwipeGestureRecognizer(UISwipeGestureRecognizer swipeGestureRecognizer, bool isForceRemove = false)
+        private void ResetSwipeGestureRecognizer(UISwipeGestureRecognizer swipeGestureRecognizer, bool isForceRemove = false)
         {
             RemoveGestureRecognizer(swipeGestureRecognizer);
             if (isForceRemove)
@@ -102,31 +127,6 @@ namespace PanCardView.iOS
                 return;
             }
             AddGestureRecognizer(swipeGestureRecognizer);
-        }
-
-        protected void SetSwipeGestures()
-        {
-            var shouldRemoveAllSwipes = !(Element?.IsUserInteractionEnabled ?? false);
-            var shouldRemoveVerticalSwipes = !(Element?.IsVerticalSwipeEnabled ?? false);
-
-            ResetSwipeGestureRecognizer(_leftSwipeGesture, shouldRemoveAllSwipes);
-            ResetSwipeGestureRecognizer(_rightSwipeGesture, shouldRemoveAllSwipes);
-            ResetSwipeGestureRecognizer(_upSwipeGesture, shouldRemoveAllSwipes || shouldRemoveVerticalSwipes);
-            ResetSwipeGestureRecognizer(_downSwipeGesture, shouldRemoveAllSwipes || shouldRemoveVerticalSwipes);
-        }
-
-        private void OnAccessibilityChangeRequested(object sender, bool isEnabled)
-        {
-            if (sender is View view)
-            {
-#pragma warning disable
-                var nativeView = Microsoft.Maui.Controls.Compatibility.Platform.iOS.Platform.GetRenderer(view)?.NativeView;
-#pragma warning restore
-                if (nativeView != null)
-                {
-                    nativeView.AccessibilityElementsHidden = !isEnabled;
-                }
-            }
         }
 
         private void OnSwiped(UISwipeGestureRecognizer gesture)
@@ -166,6 +166,6 @@ namespace PanCardView.iOS
         }
 
         private bool ShouldRecognizeSimultaneously(UIGestureRecognizer gestureRecognizer, UIGestureRecognizer otherGestureRecognizer)
-            => Element == null || !(otherGestureRecognizer is UIPanGestureRecognizer) || otherGestureRecognizer.View is CardsViewRenderer;
+            => Element == null || !(otherGestureRecognizer is UIPanGestureRecognizer) || otherGestureRecognizer.View is CardsViewLayoutView;
     }
 }

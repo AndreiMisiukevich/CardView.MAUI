@@ -1,5 +1,4 @@
-﻿using System;
-namespace PanCardView.Utility
+﻿namespace PanCardView.Utility
 {
     public struct TimeDiffItem
     {

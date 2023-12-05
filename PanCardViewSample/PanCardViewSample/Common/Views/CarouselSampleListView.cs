@@ -1,6 +1,4 @@
-﻿using Microsoft.Maui;
-using Microsoft.Maui.Layouts;
-using PanCardViewSample.ViewModels;
+﻿using PanCardViewSample.ViewModels;
 using PanCardView;
 using PanCardView.Extensions;
 using CardCarouselView = PanCardView.CarouselView;

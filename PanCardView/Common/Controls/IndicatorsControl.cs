@@ -1,17 +1,11 @@
 ﻿using PanCardView.Behaviors;
 using PanCardView.Extensions;
 using System.Collections;
-using System.Linq;
-using Microsoft.Maui;
 using static PanCardView.Controls.Styles.DefaultIndicatorItemStyles;
-using System.Threading.Tasks;
-using System.Threading;
 using PanCardView.Utility;
 using System.ComponentModel;
 using System.Collections.Specialized;
 using Microsoft.Maui.Layouts;
-
-using AbsoluteLayout = Microsoft.Maui.Controls.Compatibility.AbsoluteLayout;
 
 namespace PanCardView.Controls
 {

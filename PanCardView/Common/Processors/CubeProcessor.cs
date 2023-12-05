@@ -1,5 +1,4 @@
 ﻿using PanCardView.Extensions;
-using Microsoft.Maui;
 using static System.Math;
 using static PanCardView.Processors.Constants;
 

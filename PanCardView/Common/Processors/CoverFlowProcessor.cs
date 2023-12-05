@@ -1,11 +1,6 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using PanCardView.Enums;
+﻿using PanCardView.Enums;
 using PanCardView.Extensions;
 using PanCardView.Utility;
-using Microsoft.Maui;
 using static System.Math;
 
 namespace PanCardView.Processors

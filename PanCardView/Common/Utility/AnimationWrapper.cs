@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using Microsoft.Maui;
-using System.Threading.Tasks;
+﻿using System.Collections;
 
 namespace PanCardView.Utility
 {

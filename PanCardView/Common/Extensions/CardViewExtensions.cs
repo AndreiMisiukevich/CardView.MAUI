@@ -1,5 +1,4 @@
 ﻿using PanCardView.Controls;
-using Microsoft.Maui;
 using System.Collections;
 using System.ComponentModel;
 

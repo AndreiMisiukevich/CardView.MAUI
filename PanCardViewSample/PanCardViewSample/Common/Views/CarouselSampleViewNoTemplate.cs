@@ -1,6 +1,4 @@
-﻿using PanCardView;
-using PanCardView.Controls;
-using CardCarouselView = PanCardView.CarouselView;
+﻿using CardCarouselView = PanCardView.CarouselView;
 namespace PanCardViewSample.Views
 {
     public class CarouselSampleViewNoTemplate : ContentPage
