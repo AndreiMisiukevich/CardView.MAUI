@@ -14,7 +14,7 @@ using Microsoft.Maui.Layouts;
 
 namespace PanCardView
 {
-    public class CardsView : AbsoluteLayout
+    public class CardsView : Grid
     {
         public static readonly BindableProperty SelectedIndexProperty = BindableProperty.Create(nameof(SelectedIndex), typeof(int), typeof(CardsView), -1, BindingMode.TwoWay, propertyChanged: (bindable, oldValue, newValue) =>
         {

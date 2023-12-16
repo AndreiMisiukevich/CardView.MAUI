@@ -5,11 +5,10 @@ using static PanCardView.Controls.Styles.DefaultIndicatorItemStyles;
 using PanCardView.Utility;
 using System.ComponentModel;
 using System.Collections.Specialized;
-using Microsoft.Maui.Layouts;
 
 namespace PanCardView.Controls
 {
-    public class IndicatorsControl : StackLayout
+    public class IndicatorsControl : HorizontalStackLayout
     {
         public static readonly BindableProperty SelectedIndexProperty = BindableProperty.Create(nameof(SelectedIndex), typeof(int), typeof(IndicatorsControl), 0, propertyChanged: (bindable, oldValue, newValue) =>
         {
@@ -70,7 +69,6 @@ namespace PanCardView.Controls
         public IndicatorsControl()
         {
             Spacing = 5;
-            Orientation = StackOrientation.Horizontal;
 
             this.SetBinding(SelectedIndexProperty, nameof(CardsView.SelectedIndex));
             this.SetBinding(ItemsSourceProperty, nameof(CardsView.ItemsSource));
@@ -78,8 +76,8 @@ namespace PanCardView.Controls
             this.SetBinding(IsAutoInteractionRunningProperty, nameof(CardsView.IsAutoInteractionRunning));
 
             Margin = new Thickness(10, 20);
-            AbsoluteLayout.SetLayoutBounds(this, new Rect(.5, 1, -1, -1));
-            AbsoluteLayout.SetLayoutFlags(this, AbsoluteLayoutFlags.PositionProportional);
+            VerticalOptions = LayoutOptions.End;
+            HorizontalOptions = LayoutOptions.Center;
 
             Behaviors.Add(new ProtectedControlBehavior());
         }
