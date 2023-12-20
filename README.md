@@ -195,7 +195,7 @@ if you want to achieve scale or opacity changing effects for side views (**Scale
 ```
 
 -> If you want to customize indicators, you need set *SelectedIndicatorStyle* and/or *UnselectedIndicatorStyle*, or you are able to extend this class and override several methods.
-Also you can customize position of indicators (You need to set Rotation / AbsoluteLayout Flags and Bounds etc.)
+Also you can customize position of indicators (You need to set Rotation / Layout Options, Bounds etc.)
 
 This class is describing default indicators styles (each default indicator item is Frame)
 https://github.com/AndreiMisiukevich/CardView.MAUI/blob/main/PanCardView/Common/Styles/DefaultIndicatorItemStyles.cs

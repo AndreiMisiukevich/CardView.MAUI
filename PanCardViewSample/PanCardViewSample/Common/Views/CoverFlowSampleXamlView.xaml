@@ -15,7 +15,6 @@
         <viewModels:CardsSampleViewModel/>
     </ContentPage.BindingContext>
 
-    <Grid RowDefinitions="*,Auto">
             <cards:CoverFlowView 
                 PositionShiftValue="145"
                 IsCyclical="false"
@@ -32,6 +31,7 @@
                        Margin="80"
                        VerticalOptions="Center"
                        HorizontalOptions="Fill"
+                       HeightRequest="300"
                        Padding="0" 
                        HasShadow="false"
                        IsClippedToBounds="true"
@@ -43,16 +43,10 @@
             </cards:CoverFlowView.ItemTemplate>
 
             <controls:LeftArrowControl
-                AbsoluteLayout.LayoutBounds="0, 1, -1, -1"
                 ImageSource="{Static res:ResourcesInfo.BlackLeftArrowImageSource}" />
             <controls:RightArrowControl
-                AbsoluteLayout.LayoutBounds="1, 1, -1, -1"
                 ImageSource="{Static res:ResourcesInfo.BlackRightArrowImageSource}"/>
 
         </cards:CoverFlowView>
-        
-        <Button Grid.Row="1" Text="TO LAST" Command="{Binding GoToLastCommand}" />
-        
-    </Grid>
     
 </ContentPage>

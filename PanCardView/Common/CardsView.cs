@@ -832,11 +832,12 @@ namespace PanCardView
 
         protected virtual void SetupLayout(params View[] views)
         {
-            foreach (var view in views.Where(v => v != null))
-            {
-                AbsoluteLayout.SetLayoutBounds(view, new Rect(0, 0, 1, 1));
-                AbsoluteLayout.SetLayoutFlags(view, AbsoluteLayoutFlags.All);
-            }
+            // Setup layout if needed
+            // foreach (var view in views.Where(v => v != null))
+            // {
+            //     AbsoluteLayout.SetLayoutBounds(view, new Rect(0, 0, 1, 1));
+            //     AbsoluteLayout.SetLayoutFlags(view, AbsoluteLayoutFlags.All);
+            // }
         }
 
         protected virtual void SetSelectedItem()
