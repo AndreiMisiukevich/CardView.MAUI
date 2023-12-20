@@ -2,7 +2,6 @@
 using PanCardView.Extensions;
 using PanCardView.Utility;
 using System.ComponentModel;
-using Microsoft.Maui.Layouts;
 
 namespace PanCardView.Controls
 {
@@ -134,7 +133,7 @@ namespace PanCardView.Controls
             HeightRequest = 40;
 
             Margin = new Thickness(20, 10);
-            AbsoluteLayout.SetLayoutFlags(this, AbsoluteLayoutFlags.PositionProportional);
+            VerticalOptions = LayoutOptions.Center;
 
             this.SetBinding(SelectedIndexProperty, nameof(CardsView.SelectedIndex));
             this.SetBinding(ItemsCountProperty, nameof(CardsView.ItemsCount));

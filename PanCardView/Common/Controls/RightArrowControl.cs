@@ -7,7 +7,7 @@ namespace PanCardView.Controls
     {
         public RightArrowControl()
         {
-            AbsoluteLayout.SetLayoutBounds(this, new Rect(1, .5, -1, -1));
+            HorizontalOptions = LayoutOptions.End;
         }
 
         protected override ImageSource DefaultImageSource => WhiteRightArrowImageSource;
