@@ -56,6 +56,12 @@ namespace PanCardViewSample
                 this.Navigation.PushAsync(new CarouselSampleXamlView());
             };
 
+            var toCarouselIndicatorXamlBtn = new Button { Text = "CarouselView Indicator Xaml", FontSize = 20, TextColor = Colors.Black };
+            toCarouselIndicatorXamlBtn.Clicked += (sender, e) =>
+            {
+                this.Navigation.PushAsync(new CarouselSampleIndicatorXamlView());
+            };
+
             var toCarouselListBtn = new Button { Text = "Carousel ListView" };
             toCarouselListBtn.Clicked += (sender, e) =>
             {
@@ -83,6 +89,7 @@ namespace PanCardViewSample
                     Children = {
                         toCardsBtn,
                         toCarouselXamlBtn,
+                        toCarouselIndicatorXamlBtn,
                         toCoverFlowBtn,
                         toCubeBtn,
                         toCarouselNestedBtn,
