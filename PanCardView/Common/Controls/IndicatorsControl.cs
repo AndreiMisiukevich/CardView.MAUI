@@ -52,7 +52,10 @@ namespace PanCardView.Controls
             bindable.AsIndicatorsControl().ResetItemsSource(oldValue as IEnumerable);
         });
 
-        public static readonly BindableProperty ItemTemplateProperty = BindableProperty.Create(nameof(ItemTemplate), typeof(DataTemplate), typeof(IndicatorsControl), new DataTemplate(typeof(IndicatorItemView)));
+        public static readonly BindableProperty ItemTemplateProperty = BindableProperty.Create(nameof(ItemTemplate), typeof(DataTemplate), typeof(IndicatorsControl), new DataTemplate(typeof(IndicatorItemView)), propertyChanged: (bindable, oldValue, newValue) =>
+        {
+            bindable.AsIndicatorsControl().ResetIndicatorsLayout();
+        });
 
         public static readonly BindableProperty UseParentAsBindingContextProperty = BindableProperty.Create(nameof(UseParentAsBindingContext), typeof(bool), typeof(IndicatorsControl), true);
 

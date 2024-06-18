@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    x:Class="PanCardViewSample.Views.CarouselSampleIndicatorXamlView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:cards="clr-namespace:PanCardView;assembly=PanCardView"
+    xmlns:controls="clr-namespace:PanCardView.Controls;assembly=PanCardView"
+    xmlns:proc="clr-namespace:PanCardView.Processors;assembly=PanCardView"
+    xmlns:viewModels="clr-namespace:PanCardViewSample.ViewModels"
+    Title="Carousel Indicator Xaml"
+    BackgroundColor="Black">
+
+    <ContentPage.BindingContext>
+        <viewModels:CardsSampleViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.Resources>
+        <Style x:Key="SelectedIndicator" TargetType="Border">
+            <Setter Property="BackgroundColor" Value="Yellow" />
+        </Style>
+
+        <Style x:Key="UnselectedIndicator" TargetType="Border">
+            <Setter Property="BackgroundColor" Value="Black" />
+        </Style>
+    </ContentPage.Resources>
+
+    <Grid>
+        <cards:CarouselView
+            x:Name="Carousel"
+            Padding="50"
+            SelectedIndex="{Binding CurrentIndex}"
+            SlideShowDuration="3500">
+            <x:Arguments>
+                <proc:CarouselProcessor
+                    OpacityFactor="0"
+                    RotationFactor="0.1"
+                    ScaleFactor="0.5" />
+            </x:Arguments>
+
+            <cards:CarouselView.ItemsSource>
+                <x:Array Type="{x:Type View}">
+                    <BoxView Color="Red" />
+                    <BoxView Color="Green" />
+                    <BoxView Color="Blue" />
+                </x:Array>
+            </cards:CarouselView.ItemsSource>
+
+            <controls:IndicatorsControl
+                SelectedIndicatorStyle="{StaticResource SelectedIndicator}"
+                ToFadeDuration="1500"
+                UnselectedIndicatorStyle="{StaticResource UnselectedIndicator}">
+                <controls:IndicatorsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border
+                            HeightRequest="20"
+                            Stroke="White"
+                            StrokeShape="RoundRectangle 20,0,0,20"
+                            WidthRequest="20" />
+                    </DataTemplate>
+                </controls:IndicatorsControl.ItemTemplate>
+            </controls:IndicatorsControl>
+
+            <controls:LeftArrowControl ToFadeDuration="2500" />
+            <controls:RightArrowControl ToFadeDuration="2500" />
+        </cards:CarouselView>
+
+        <!--  NOTE: This is an example of setting up an IndicatorsControl that's not nested in the CarouselView  -->
+        <!--<controls:IndicatorsControl
+            BindingContext="{x:Reference Carousel}"
+            SelectedIndicatorStyle="{StaticResource SelectedIndicator}"
+            ToFadeDuration="1500"
+            UnselectedIndicatorStyle="{StaticResource UnselectedIndicator}"
+            UseParentAsBindingContext="False">
+            <controls:IndicatorsControl.ItemTemplate>
+                <DataTemplate>
+                    <Border
+                        HeightRequest="20"
+                        Stroke="White"
+                        StrokeShape="RoundRectangle 20,0,0,20"
+                        WidthRequest="20" />
+                </DataTemplate>
+            </controls:IndicatorsControl.ItemTemplate>
+        </controls:IndicatorsControl>-->
+    </Grid>
+
+</ContentPage>

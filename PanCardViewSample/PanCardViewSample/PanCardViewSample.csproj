@@ -54,13 +54,10 @@
 	</ItemGroup>
 	
 	<ItemGroup>
-	  <None Remove="Common\" />
-	</ItemGroup>
-	<ItemGroup>
-	  <Folder Include="Common\" />
-	</ItemGroup>
-	<ItemGroup>
 	  <MauiXaml Update="Common\Views\CarouselSampleNestedXamlView.xaml">
+	    <SubType></SubType>
+	  </MauiXaml>
+	  <MauiXaml Update="Common\Views\CarouselSampleIndicatorXamlView.xaml">
 	    <SubType></SubType>
 	  </MauiXaml>
 	  <MauiXaml Update="Common\Views\CarouselSampleXamlView.xaml">
