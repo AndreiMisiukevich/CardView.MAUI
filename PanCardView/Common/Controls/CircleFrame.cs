@@ -6,7 +6,7 @@ namespace PanCardView.Controls
 {
     public class CircleFrame : Frame
     {
-        public static readonly BindableProperty SizeProperty = BindableProperty.Create(nameof(Size), typeof(double), typeof(CircleFrame), 0.0, propertyChanged: (bindable, oldValue, newValue) =>
+        public static readonly BindableProperty SizeProperty = BindableProperty.Create(nameof(Size), typeof(double), typeof(CircleFrame), 10.0, propertyChanged: (bindable, oldValue, newValue) =>
         {
             bindable.AsCircleFrame().OnSizeUpdated();
         });
