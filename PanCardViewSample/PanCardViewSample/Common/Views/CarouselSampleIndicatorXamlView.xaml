@@ -15,11 +15,19 @@
     </ContentPage.BindingContext>
 
     <ContentPage.Resources>
-        <Style x:Key="SelectedIndicator" TargetType="Border">
+        <Style x:Key="SelectedIndicator" TargetType="controls:IndicatorItemView">
+            <Setter Property="Size" Value="50" />
+        </Style>
+
+        <Style x:Key="UnselectedIndicator" TargetType="controls:IndicatorItemView">
+            <Setter Property="Size" Value="20" />
+        </Style>
+
+        <Style x:Key="SelectedBorderIndicator" TargetType="Border">
             <Setter Property="BackgroundColor" Value="Yellow" />
         </Style>
 
-        <Style x:Key="UnselectedIndicator" TargetType="Border">
+        <Style x:Key="UnselectedBorderIndicator" TargetType="Border">
             <Setter Property="BackgroundColor" Value="Black" />
         </Style>
     </ContentPage.Resources>
@@ -46,9 +54,9 @@
             </cards:CarouselView.ItemsSource>
 
             <controls:IndicatorsControl
-                SelectedIndicatorStyle="{StaticResource SelectedIndicator}"
+                SelectedIndicatorStyle="{StaticResource SelectedBorderIndicator}"
                 ToFadeDuration="1500"
-                UnselectedIndicatorStyle="{StaticResource UnselectedIndicator}">
+                UnselectedIndicatorStyle="{StaticResource UnselectedBorderIndicator}">
                 <controls:IndicatorsControl.ItemTemplate>
                     <DataTemplate>
                         <Border
@@ -60,6 +68,12 @@
                 </controls:IndicatorsControl.ItemTemplate>
             </controls:IndicatorsControl>
 
+            <!--  NOTE: Example of setting styles of default ItemTemplate  -->
+            <!--<controls:IndicatorsControl
+                SelectedIndicatorStyle="{StaticResource SelectedIndicator}"
+                ToFadeDuration="1500"
+                UnselectedIndicatorStyle="{StaticResource UnselectedIndicator}" />-->
+
             <controls:LeftArrowControl ToFadeDuration="2500" />
             <controls:RightArrowControl ToFadeDuration="2500" />
         </cards:CarouselView>
@@ -67,9 +81,9 @@
         <!--  NOTE: This is an example of setting up an IndicatorsControl that's not nested in the CarouselView  -->
         <!--<controls:IndicatorsControl
             BindingContext="{x:Reference Carousel}"
-            SelectedIndicatorStyle="{StaticResource SelectedIndicator}"
+            SelectedIndicatorStyle="{StaticResource SelectedBorderIndicator}"
             ToFadeDuration="1500"
-            UnselectedIndicatorStyle="{StaticResource UnselectedIndicator}"
+            UnselectedIndicatorStyle="{StaticResource UnselectedBorderIndicator}"
             UseParentAsBindingContext="False">
             <controls:IndicatorsControl.ItemTemplate>
                 <DataTemplate>

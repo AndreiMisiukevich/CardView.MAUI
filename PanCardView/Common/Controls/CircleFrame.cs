@@ -6,7 +6,7 @@ namespace PanCardView.Controls
 {
     public class CircleFrame : Frame
     {
-        public static readonly BindableProperty SizeProperty = BindableProperty.Create(nameof(Size), typeof(double), typeof(CircleFrame), 0.0, propertyChanged: (bindable, oldValue, newValue) =>
+        public static readonly BindableProperty SizeProperty = BindableProperty.Create(nameof(Size), typeof(double), typeof(CircleFrame), 10.0, propertyChanged: (bindable, oldValue, newValue) =>
         {
             bindable.AsCircleFrame().OnSizeUpdated();
         });
@@ -17,6 +17,10 @@ namespace PanCardView.Controls
             HorizontalOptions = LayoutOptions.Center;
             HasShadow = false;
             Padding = 0;
+
+            // NOTE: Default Size was set either by bindable property default or
+            // applied style which doesn't call property changed. Need to manually update.
+            OnSizeUpdated();
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
