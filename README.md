@@ -121,12 +121,12 @@ Indicators styling:
 ``` xml
  <ContentPage.Resources>
     <ResourceDictionary>
-        <Style x:Key="ActiveIndicator" TargetType="Frame">
+        <Style x:Key="ActiveIndicator" TargetType="Border">
             <Setter Property="BackgroundColor" Value="Red" />
         </Style>
-        <Style x:Key="InactiveIndicator" TargetType="Frame">
+        <Style x:Key="InactiveIndicator" TargetType="Border">
             <Setter Property="BackgroundColor" Value="Transparent" />
-            <Setter Property="OutlineColor" Value="Red" />
+            <Setter Property="Stroke" Value="Red" />
         </Style>
     </ResourceDictionary>
 </ContentPage.Resources>
@@ -197,7 +197,7 @@ if you want to achieve scale or opacity changing effects for side views (**Scale
 -> If you want to customize indicators, you need set *SelectedIndicatorStyle* and/or *UnselectedIndicatorStyle*, or you are able to extend this class and override several methods.
 Also you can customize position of indicators (You need to set Rotation / Layout Options, Bounds etc.)
 
-This class is describing default indicators styles (each default indicator item is Frame)
+This class is describing default indicators styles (each default indicator item is a Border)
 https://github.com/AndreiMisiukevich/CardView.MAUI/blob/main/PanCardView/Common/Styles/DefaultIndicatorItemStyles.cs
 
 

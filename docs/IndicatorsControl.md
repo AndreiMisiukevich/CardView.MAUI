@@ -13,7 +13,7 @@ If the IndicatorsControl is nested in a [CarouselView](CarouselView.md) or [Card
 
 ### Custom Indicator
 
-The default indicator is a `Frame` control that is a 10px by 10px circle. This can be change by setting the `ItemTemplate` then setting the `SelectedIndicatorStyle` and `UnselectedIndicatorStyle` styles.
+The default indicator is a `Border` control that is a 25px by 25px circle. This can be change by setting the `ItemTemplate` then setting the `SelectedIndicatorStyle` and `UnselectedIndicatorStyle` styles.
 
 ### Properties
 
@@ -23,8 +23,8 @@ Property | Type | Default | Description
 --- | --- | --- | ---
 SelectedIndex | `int` | 0 | The currently selected index this will disaplyed with the `SelectedIndicatorStyle`
 ItemsCount | `int` | 0 | The number of items the indicator should display.
-SelectedIndicatorStyle | `Style` | DefaultSelectedIndicatorItemStyle - Frame style that sets `Background` to White with .8 Alpha  | The style used when the indicator is selected.
-UnselectedIndicatorStyle | `Style` | DefaultUnselectedIndicatorItemStyle - Frame style that sets `Background` to Transparent and `OutlineColor` to White with .8 Alpha | The style used when the indicator is not selected.
+SelectedIndicatorStyle | `Style` | DefaultSelectedIndicatorItemStyle - Border style that sets `Background` to White with .8 Alpha  | The style used when the indicator is selected.
+UnselectedIndicatorStyle | `Style` | DefaultUnselectedIndicatorItemStyle - Border style that sets `Background` to Transparent and `Stroke` to White with .8 Alpha | The style used when the indicator is not selected.
 IsUserInteractionRunning | `bool` | true | Is used when `ToFadeDuration` is greater than 0 to show and hide the IndicatorControl.
 IsAutoInteractionRunning | `bool` | true | Is used when `ToFadeDuration` is greater than 0 to show and hide the IndicatorControl.
 HidesForSingleIndicator | `bool` | tru | Determines if we should hide indicators in case 1 element.
