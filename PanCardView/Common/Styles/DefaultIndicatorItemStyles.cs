@@ -10,20 +10,20 @@
         }
 
         public static Style DefaultSelectedIndicatorItemStyle
-        => _defaultSelectedIndicatorItemStyle ?? (_defaultSelectedIndicatorItemStyle = new Style(typeof(Frame))
+        => _defaultSelectedIndicatorItemStyle ??= new Style(typeof(Border))
         {
             Setters = {
                 new Setter { Property = VisualElement.BackgroundColorProperty, Value = Colors.White.MultiplyAlpha(.8f) }
             }
-        });
+        };
 
         public static Style DefaultUnselectedIndicatorItemStyle
-        => _defaultUnselectedIndicatorItemStyle ?? (_defaultUnselectedIndicatorItemStyle = new Style(typeof(Frame))
+        => _defaultUnselectedIndicatorItemStyle ??= new Style(typeof(Border))
         {
             Setters = {
                 new Setter { Property = VisualElement.BackgroundColorProperty, Value = Colors.Transparent },
-                new Setter { Property = Frame.BorderColorProperty, Value = Colors.White.MultiplyAlpha(.8f) }
+                new Setter { Property = Border.StrokeProperty, Value = Colors.White.MultiplyAlpha(.8f) }
             }
-        });
+        };
     }
 }

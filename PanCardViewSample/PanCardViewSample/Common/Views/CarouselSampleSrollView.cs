@@ -18,7 +18,7 @@ namespace PanCardViewSample.Views
 				Children = {
 					new IndicatorsControl
 					{
-						SelectedIndicatorStyle = new Style(typeof(Frame))
+						SelectedIndicatorStyle = new Style(typeof(Border))
 						{
 							BasedOn = DefaultIndicatorItemStyles.DefaultSelectedIndicatorItemStyle,
 							Setters = {

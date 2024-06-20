@@ -1,22 +1,21 @@
 ﻿using System.ComponentModel;
+using Microsoft.Maui.Controls.Shapes;
 using PanCardView.Extensions;
-using static System.Math;
 
 namespace PanCardView.Controls
 {
-    public class CircleFrame : Frame
+    public class CircleBorder : Border
     {
-        public static readonly BindableProperty SizeProperty = BindableProperty.Create(nameof(Size), typeof(double), typeof(CircleFrame), 10.0, propertyChanged: (bindable, oldValue, newValue) =>
+        public static readonly BindableProperty SizeProperty = BindableProperty.Create(nameof(Size), typeof(double), typeof(CircleBorder), 25.0, propertyChanged: (bindable, oldValue, newValue) =>
         {
-            bindable.AsCircleFrame().OnSizeUpdated();
+            bindable.AsCircleBorder().OnSizeUpdated();
         });
 
-        public CircleFrame()
+        public CircleBorder()
         {
             VerticalOptions = LayoutOptions.Center;
             HorizontalOptions = LayoutOptions.Center;
-            HasShadow = false;
-            Padding = 0;
+            StrokeShape = new Ellipse();
 
             // NOTE: Default Size was set either by bindable property default or
             // applied style which doesn't call property changed. Need to manually update.
@@ -34,15 +33,6 @@ namespace PanCardView.Controls
             set => SetValue(SizeProperty, value);
         }
 
-        protected override void OnSizeAllocated(double width, double height)
-        {
-            base.OnSizeAllocated(width, height);
-            if(width > 0 && height > 0)
-            {
-                SetCornerRadius(Min(width, height));
-            }
-        }
-
         protected void OnSizeUpdated()
         {
             var size = Size;
@@ -56,15 +46,11 @@ namespace PanCardView.Controls
                 BatchBegin();
                 HeightRequest = size;
                 WidthRequest = size;
-                SetCornerRadius(size);
             }
             finally
             {
                 BatchCommit();
             }
         }
-
-        private void SetCornerRadius(double size)
-            => CornerRadius = (float)size / 2;
     }
 }

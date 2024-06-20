@@ -16,7 +16,7 @@ namespace PanCardView
             ArrowControl.Preserve();
             LeftArrowControl.Preserve();
             RightArrowControl.Preserve();
-            CircleFrame.Preserve();
+            CircleBorder.Preserve();
             IndicatorItemView.Preserve();
             IndicatorsControl.Preserve();
             TabsControl.Preserve();

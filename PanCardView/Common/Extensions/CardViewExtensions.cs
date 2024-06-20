@@ -22,8 +22,8 @@ namespace PanCardView.Extensions
         public static IndicatorsControl AsIndicatorsControl(this BindableObject bindable)
             => bindable as IndicatorsControl;
 
-        public static CircleFrame AsCircleFrame(this BindableObject bindable)
-            => bindable as CircleFrame;
+        public static CircleBorder AsCircleBorder(this BindableObject bindable)
+            => bindable as CircleBorder;
 
         public static ArrowControl AsArrowControl(this BindableObject bindable)
             => bindable as ArrowControl;
