@@ -14,7 +14,9 @@ namespace PanCardView
             // NOTE: For some reason setting this to True
             // Makes the view invisible on Android
             // Probably it's a MAUI bug
-            //IsClippedToBounds = true;
+            IsClippedToBounds = 
+                DeviceInfo.Platform == DevicePlatform.MacCatalyst || 
+                DeviceInfo.Platform == DevicePlatform.iOS;
         }
 
         protected override double DefaultMoveSizePercentage => .3;
