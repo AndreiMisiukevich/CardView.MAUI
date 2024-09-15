@@ -10,7 +10,7 @@ using static System.Math;
 using PanCardView.EventArgs;
 using PanCardView.Delegates;
 using System.ComponentModel;
-using Microsoft.Maui.Layouts;
+using System.Runtime.CompilerServices;
 
 namespace PanCardView
 {
@@ -62,12 +62,12 @@ namespace PanCardView
 
         public static readonly BindableProperty IsUserInteractionRunningProperty = BindableProperty.Create(nameof(IsUserInteractionRunning), typeof(bool), typeof(CardsView), false, BindingMode.OneWayToSource, propertyChanged: (bindable, oldValue, newValue) =>
         {
-            bindable.AsCardsView().AdjustSlideShow((bool)newValue);
+            bindable.AsCardsView().AdjustSlideShow();
         });
 
         public static readonly BindableProperty IsAutoInteractionRunningProperty = BindableProperty.Create(nameof(IsAutoInteractionRunning), typeof(bool), typeof(CardsView), false, BindingMode.OneWayToSource, propertyChanged: (bindable, oldValue, newValue) =>
         {
-            bindable.AsCardsView().AdjustSlideShow((bool)newValue);
+            bindable.AsCardsView().AdjustSlideShow();
         });
 
         public static readonly BindableProperty IsPanInteractionEnabledProperty = BindableProperty.Create(nameof(IsPanInteractionEnabled), typeof(bool), typeof(CardsView), true, propertyChanged: (bindable, oldValue, newValue) =>
@@ -222,6 +222,7 @@ namespace PanCardView
         {
             Processor = processor;
             SetPanGesture();
+            Unloaded += OnUnloaded;
         }
 
         private bool ShouldIgnoreSetCurrentView { get; set; }
@@ -857,10 +858,13 @@ namespace PanCardView
             SelectedItem = GetItemByIndex(index);
         }
 
-        protected virtual async void AdjustSlideShow(bool isForceStop = false)
+        protected virtual async void AdjustSlideShow(bool? isForceStop = null)
         {
+            bool isNotVisible = !IsVisible || Opacity <= 0;
+            isForceStop ??= isNotVisible || IsUserInteractionRunning || IsAutoInteractionRunning;
+
             DisposeCancellationTokenSource(ref _slideShowTokenSource);
-            if (isForceStop)
+            if (isForceStop.Value)
             {
                 return;
             }
@@ -2063,6 +2067,23 @@ namespace PanCardView
             var args = new ItemSwipedEventArgs(swipeDirection, index, item);
             ItemSwipedCommand?.Execute(args);
             ItemSwiped?.Invoke(this, args);
+        }
+
+        protected override void OnPropertyChanged([CallerMemberName] string name = null)
+        {
+            base.OnPropertyChanged(name);
+
+            if (name.IgnoreCaseEquals(nameof(IsVisible)) || name.IgnoreCaseEquals(nameof(Opacity)))
+            {
+                AdjustSlideShow();
+            }
+        }
+
+        private void OnUnloaded(object sender, System.EventArgs e)
+        {
+            AdjustSlideShow(true);
+            Unloaded -= OnUnloaded;
+            Handler?.DisconnectHandler();
         }
     }
 }
