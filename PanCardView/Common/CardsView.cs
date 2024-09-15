@@ -860,7 +860,7 @@ namespace PanCardView
 
         protected virtual async void AdjustSlideShow(bool isForceStop = false)
         {
-            isForceStop |= !IsVisible || Opacity <= 0 || IsUserInteractionRunning || IsAutoInteractionRunning;
+            isForceStop = isForceStop || !IsVisible || Opacity <= 0 || IsUserInteractionRunning || IsAutoInteractionRunning;
 
             DisposeCancellationTokenSource(ref _slideShowTokenSource);
             if (isForceStop)
