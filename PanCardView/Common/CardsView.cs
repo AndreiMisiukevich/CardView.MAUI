@@ -858,13 +858,12 @@ namespace PanCardView
             SelectedItem = GetItemByIndex(index);
         }
 
-        protected virtual async void AdjustSlideShow(bool? isForceStop = null)
+        protected virtual async void AdjustSlideShow(bool isForceStop = false)
         {
-            bool isNotVisible = !IsVisible || Opacity <= 0;
-            isForceStop ??= isNotVisible || IsUserInteractionRunning || IsAutoInteractionRunning;
+            isForceStop |= !IsVisible || Opacity <= 0 || IsUserInteractionRunning || IsAutoInteractionRunning;
 
             DisposeCancellationTokenSource(ref _slideShowTokenSource);
-            if (isForceStop.Value)
+            if (isForceStop)
             {
                 return;
             }
@@ -2073,7 +2072,7 @@ namespace PanCardView
         {
             base.OnPropertyChanged(name);
 
-            if (name.IgnoreCaseEquals(nameof(IsVisible)) || name.IgnoreCaseEquals(nameof(Opacity)))
+            if (name == IsVisibleProperty.PropertyName || name == OpacityProperty.PropertyName)
             {
                 AdjustSlideShow();
             }
@@ -2081,8 +2080,8 @@ namespace PanCardView
 
         private void OnUnloaded(object sender, System.EventArgs e)
         {
-            AdjustSlideShow(true);
             Unloaded -= OnUnloaded;
+            AdjustSlideShow(true);
             Handler?.DisconnectHandler();
         }
     }

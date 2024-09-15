@@ -112,8 +112,5 @@ namespace PanCardView.Extensions
             }
             return searchIndex;
         }
-
-        public static bool IgnoreCaseEquals(this string valueA, string valueB)
-            => valueA.Equals(valueB, StringComparison.OrdinalIgnoreCase);
     }
 }

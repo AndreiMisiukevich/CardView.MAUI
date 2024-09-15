@@ -186,7 +186,7 @@ namespace PanCardView.Processors
                 return 0;
             }
 
-            double value = cardsView.IsHorizontalOrientation ? view.TranslationX : view.TranslationY;
+            var value = cardsView.IsHorizontalOrientation ? view.TranslationX : view.TranslationY;
 
             if (double.IsNaN(value))
             {
