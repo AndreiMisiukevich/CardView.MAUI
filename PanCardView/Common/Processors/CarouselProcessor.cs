@@ -185,7 +185,14 @@ namespace PanCardView.Processors
             {
                 return 0;
             }
+
             var value = cardsView.IsHorizontalOrientation ? view.TranslationX : view.TranslationY;
+
+            if (double.IsNaN(value))
+            {
+                return 0;
+            }
+
             value += Sign(value) * cardsView.GetSize(view) * 0.5 * (1 - view.Scale);
             return value;
         }
