@@ -222,7 +222,14 @@ namespace PanCardView
         {
             Processor = processor;
             SetPanGesture();
+            Loaded += OnLoaded;
             Unloaded += OnUnloaded;
+        }
+
+        ~CardsView()
+        {
+            Loaded -= OnLoaded;
+            Unloaded -= OnUnloaded;
         }
 
         private bool ShouldIgnoreSetCurrentView { get; set; }
@@ -2078,11 +2085,14 @@ namespace PanCardView
             }
         }
 
+        private void OnLoaded(object sender, System.EventArgs e)
+        {
+            AdjustSlideShow();
+        }
+
         private void OnUnloaded(object sender, System.EventArgs e)
         {
-            Unloaded -= OnUnloaded;
             AdjustSlideShow(true);
-            Handler?.DisconnectHandler();
         }
     }
 }
