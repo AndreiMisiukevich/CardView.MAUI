@@ -42,7 +42,9 @@ namespace PanCardView
 
         public static readonly BindableProperty ItemTemplateProperty = BindableProperty.Create(nameof(ItemTemplate), typeof(DataTemplate), typeof(CardsView), propertyChanged: (bindable, oldValue, newValue) =>
         {
-            bindable.AsCardsView().ForceRedrawViews();
+           var cardView = bindable.AsCardsView();
+            cardView.OnItemTemplateChanged();
+            cardView.ForceRedrawViews();
         });
 
         public static readonly BindableProperty BackViewsDepthProperty = BindableProperty.Create(nameof(BackViewsDepth), typeof(int), typeof(CardsView), defaultValueCreator: b => b.AsCardsView().DefaultBackViewsDepth, propertyChanged: (bindable, oldValue, newValue) =>
@@ -806,23 +808,12 @@ namespace PanCardView
 
         protected virtual async void OnSizeChanged()
         {
-            if (CurrentView != null && ItemTemplate != null)
-            {
-                var currentViewPair = _viewsPool.FirstOrDefault(p => p.Value.Contains(CurrentView));
-                if (!currentViewPair.Equals(default(KeyValuePair<object, List<View>>)))
-                {
-                    currentViewPair.Value.Clear();
-                    currentViewPair.Value.Add(CurrentView);
-                    _viewsPool.Clear();
-                    _viewsPool.Add(currentViewPair.Key, currentViewPair.Value);
-                }
-            }
             await Task.Delay(1);// Workaround for https://github.com/AndreiMisiukevich/CardView/issues/194
             ForceRedrawViews();
             RemoveUnprocessingChildren();
             Layout(new Rect(X, Y, Width, Height));
         }
-
+        
         protected virtual void SetupBackViews(int? index = null)
         {
             var realIndex = index ?? SelectedIndex;
@@ -1764,6 +1755,21 @@ namespace PanCardView
             }
 
             OnObservableCollectionChanged(oldCollection, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+        }
+
+        private void OnItemTemplateChanged()
+        {
+            if (CurrentView != null)
+            {
+                var currentViewPair = _viewsPool.FirstOrDefault(p => p.Value.Contains(CurrentView));
+                if (!currentViewPair.Equals(default(KeyValuePair<object, List<View>>)))
+                {
+                    currentViewPair.Value.Clear();
+                    currentViewPair.Value.Add(CurrentView);
+                    _viewsPool.Clear();
+                    _viewsPool.Add(currentViewPair.Key, currentViewPair.Value);
+                }
+            }
         }
 
         private void SetNewIndex()
