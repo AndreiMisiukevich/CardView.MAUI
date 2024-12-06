@@ -813,7 +813,7 @@ namespace PanCardView
             RemoveUnprocessingChildren();
             Layout(new Rect(X, Y, Width, Height));
         }
-        
+
         protected virtual void SetupBackViews(int? index = null)
         {
             var realIndex = index ?? SelectedIndex;
