@@ -95,6 +95,8 @@ namespace PanCardView
 
         public static readonly BindableProperty IsViewReusingEnabledProperty = BindableProperty.Create(nameof(IsViewReusingEnabled), typeof(bool), typeof(CardsView), true);
 
+        public static readonly BindableProperty IsViewPoolClearedOnSizeChangedEnabledProperty = BindableProperty.Create(nameof(IsViewPoolClearedOnSizeChangedEnabled), typeof(bool), typeof(CardsView), true);
+        
         public static readonly BindableProperty UserInteractionDelayProperty = BindableProperty.Create(nameof(UserInteractionDelay), typeof(int), typeof(CardsView), 0);
 
         public static readonly BindableProperty IsUserInteractionInCourseProperty = BindableProperty.Create(nameof(IsUserInteractionInCourse), typeof(bool), typeof(CardsView), true);
@@ -428,6 +430,12 @@ namespace PanCardView
             set => SetValue(IsViewReusingEnabledProperty, value);
         }
 
+        public bool IsViewPoolClearedOnSizeChangedEnabled
+        {
+            get => (bool)GetValue(IsViewPoolClearedOnSizeChangedEnabledProperty);
+            set => SetValue(IsViewPoolClearedOnSizeChangedEnabledProperty, value);
+        }
+        
         public int UserInteractionDelay
         {
             get => (int)GetValue(UserInteractionDelayProperty);
@@ -806,7 +814,7 @@ namespace PanCardView
 
         protected virtual async void OnSizeChanged()
         {
-            if (CurrentView != null && ItemTemplate != null)
+            if (CurrentView != null && ItemTemplate != null && IsViewPoolClearedOnSizeChangedEnabled)
             {
                 var currentViewPair = _viewsPool.FirstOrDefault(p => p.Value.Contains(CurrentView));
                 if (!currentViewPair.Equals(default(KeyValuePair<object, List<View>>)))
