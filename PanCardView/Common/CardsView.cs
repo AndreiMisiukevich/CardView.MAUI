@@ -42,9 +42,7 @@ namespace PanCardView
 
         public static readonly BindableProperty ItemTemplateProperty = BindableProperty.Create(nameof(ItemTemplate), typeof(DataTemplate), typeof(CardsView), propertyChanged: (bindable, oldValue, newValue) =>
         {
-           var cardView = bindable.AsCardsView();
-            cardView.OnItemTemplateChanged();
-            cardView.ForceRedrawViews();
+            bindable.AsCardsView().OnItemTemplateChanged();
         });
 
         public static readonly BindableProperty BackViewsDepthProperty = BindableProperty.Create(nameof(BackViewsDepth), typeof(int), typeof(CardsView), defaultValueCreator: b => b.AsCardsView().DefaultBackViewsDepth, propertyChanged: (bindable, oldValue, newValue) =>
@@ -1759,17 +1757,9 @@ namespace PanCardView
 
         private void OnItemTemplateChanged()
         {
-            if (CurrentView != null)
-            {
-                var currentViewPair = _viewsPool.FirstOrDefault(p => p.Value.Contains(CurrentView));
-                if (!currentViewPair.Equals(default(KeyValuePair<object, List<View>>)))
-                {
-                    currentViewPair.Value.Clear();
-                    currentViewPair.Value.Add(CurrentView);
-                    _viewsPool.Clear();
-                    _viewsPool.Add(currentViewPair.Key, currentViewPair.Value);
-                }
-            }
+            _viewsPool.Clear();
+            ForceRedrawViews();
+            RemoveUnprocessingChildren();
         }
 
         private void SetNewIndex()
