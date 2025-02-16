@@ -30,7 +30,7 @@
 	    <Title>CardsView.Maui</Title>
 	    <Description>This package allows to create classic CarouselView, CoverFlowView, CardsView and CubeView.</Description>
 	    <PackageIcon>icon.png</PackageIcon>
-	    <Version>1.1.0</Version>
+	    <Version>1.1.1</Version>
 	    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
 	    <PackageTags>carouselview, cardsview, coverflowview, carousel view, cards view, maui, dotnet, carousel, card, cards, cardview, swipeview, swiperview, swipe, tinder swiper, coverflow, cubeView, cube, tabsView, tabView, tabControl, tabsControl, tabs, tab</PackageTags>
 	    <Configurations>Debug;Release</Configurations>

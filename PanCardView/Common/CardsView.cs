@@ -1777,7 +1777,7 @@ namespace PanCardView
                 var currentItem = GetItem(CurrentView);
                 for (var i = 0; i < ItemsCount; ++i)
                 {
-                    if (Equals(GetItemByIndex(index), currentItem))
+                    if (Equals(GetItemByIndex(i), currentItem))
                     {
                         index = i;
                         break;
