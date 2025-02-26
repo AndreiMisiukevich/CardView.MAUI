@@ -1753,6 +1753,7 @@ namespace PanCardView
             }
 
             OnObservableCollectionChanged(oldCollection, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+            RemoveUnprocessingChildren();
         }
 
         private void OnItemTemplateChanged()
