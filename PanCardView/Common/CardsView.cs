@@ -226,12 +226,6 @@ namespace PanCardView
             Unloaded += OnUnloaded;
         }
 
-        ~CardsView()
-        {
-            Loaded -= OnLoaded;
-            Unloaded -= OnUnloaded;
-        }
-
         private bool ShouldIgnoreSetCurrentView { get; set; }
 
         private bool ShouldSetIndexAfterPan { get; set; }
