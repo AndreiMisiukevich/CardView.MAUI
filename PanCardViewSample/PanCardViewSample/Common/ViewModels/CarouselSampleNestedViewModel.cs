@@ -4,74 +4,74 @@ namespace PanCardViewSample.ViewModels
 {
 	public sealed class CarouselSampleNestedViewModel
 	{
-		public ObservableCollection<Item> Items { get; } = new ObservableCollection<Item>
+		public ObservableCollection<CarouselNestedItem> Items { get; } = new ObservableCollection<CarouselNestedItem>
 		{
-			new Item
+			new CarouselNestedItem
             {
 				Text = "FIRST",
 				Color = Colors.LightBlue,
-				Items = new ObservableCollection<NestedItem>
+				Items = new ObservableCollection<CarouselNestedImageItem>
                 {
-					new NestedItem { Text = "1/2 NESTED ITEM", Source = "https://picsum.photos/500/500?image=250" },
-					new NestedItem { Text = "2/2 NESTED ITEM", Source = "https://picsum.photos/500/500?image=251" },
+					new CarouselNestedImageItem { Text = "1/2 NESTED ITEM", Source = ImageSource.FromUri(new Uri("https://picsum.photos/500/500?image=250")) },
+					new CarouselNestedImageItem { Text = "2/2 NESTED ITEM", Source = ImageSource.FromUri(new Uri("https://picsum.photos/500/500?image=251")) },
 				}
             },
-			new Item
+			new CarouselNestedItem
 			{
 				Text = "SECOND",
 				Color = Colors.LightPink,
-				Items = new ObservableCollection<NestedItem>
+				Items = new ObservableCollection<CarouselNestedImageItem>
 				{
-					new NestedItem { Text = "1/2 NESTED ITEM", Source = "https://picsum.photos/500/500?image=252" },
-					new NestedItem { Text = "2/2 NESTED ITEM", Source = "https://picsum.photos/500/500?image=253" },
+					new CarouselNestedImageItem { Text = "1/2 NESTED ITEM", Source = ImageSource.FromUri(new Uri("https://picsum.photos/500/500?image=252")) },
+					new CarouselNestedImageItem { Text = "2/2 NESTED ITEM", Source = ImageSource.FromUri(new Uri("https://picsum.photos/500/500?image=253")) },
 				}
 			},
-			new Item
+			new CarouselNestedItem
 			{
 				Text = "THIRD",
 				Color = Colors.LightSkyBlue,
-				Items = new ObservableCollection<NestedItem>
+				Items = new ObservableCollection<CarouselNestedImageItem>
 				{
-					new NestedItem { Text = "1/2 NESTED ITEM", Source = "https://picsum.photos/500/500?image=254" },
-					new NestedItem { Text = "2/2 NESTED ITEM", Source = "https://picsum.photos/500/500?image=255" },
+					new CarouselNestedImageItem { Text = "1/2 NESTED ITEM", Source = ImageSource.FromUri(new Uri("https://picsum.photos/500/500?image=254")) },
+					new CarouselNestedImageItem { Text = "2/2 NESTED ITEM", Source = ImageSource.FromUri(new Uri("https://picsum.photos/500/500?image=255")) },
 				}
 			},
-			new Item
+			new CarouselNestedItem
 			{
 				Text = "FOURTH",
 				Color = Colors.LightGray,
-				Items = new ObservableCollection<NestedItem>
+				Items = new ObservableCollection<CarouselNestedImageItem>
 				{
-					new NestedItem { Text = "1/2 NESTED ITEM", Source = "https://picsum.photos/500/500?image=256" },
-					new NestedItem { Text = "2/2 NESTED ITEM", Source = "https://picsum.photos/500/500?image=257" },
+					new CarouselNestedImageItem { Text = "1/2 NESTED ITEM", Source = ImageSource.FromUri(new Uri("https://picsum.photos/500/500?image=256")) },
+					new CarouselNestedImageItem { Text = "2/2 NESTED ITEM", Source = ImageSource.FromUri(new Uri("https://picsum.photos/500/500?image=257")) },
 				}
 			},
-			new Item
+			new CarouselNestedItem
 			{
 				Text = "FIFTH",
 				Color = Colors.LightGoldenrodYellow,
-				Items = new ObservableCollection<NestedItem>
+				Items = new ObservableCollection<CarouselNestedImageItem>
 				{
-					new NestedItem { Text = "1/2 NESTED ITEM", Source = "https://picsum.photos/500/500?image=257" },
-					new NestedItem { Text = "2/2 NESTED ITEM", Source = "https://picsum.photos/500/500?image=258" },
+					new CarouselNestedImageItem { Text = "1/2 NESTED ITEM", Source = ImageSource.FromUri(new Uri("https://picsum.photos/500/500?image=257")) },
+					new CarouselNestedImageItem { Text = "2/2 NESTED ITEM", Source = ImageSource.FromUri(new Uri("https://picsum.photos/500/500?image=258")) },
 				}
 			},
 		};
 
-		public sealed class Item
-		{
-			public string Text { get; set; }
-			public Color Color { get; set; }
+	}
 
-			public ObservableCollection<NestedItem> Items { get; set; }
-		}
+	public sealed class CarouselNestedItem
+	{
+		public string Text { get; set; }
+		public Color Color { get; set; }
+		public ObservableCollection<CarouselNestedImageItem> Items { get; set; }
+	}
 
-		public sealed class NestedItem
-        {
-			public string Text { get; set; }
-			public Color Color { get; set; }
-			public string Source { get; set; }
-		}
+	public sealed class CarouselNestedImageItem
+	{
+		public string Text { get; set; }
+		public Color Color { get; set; }
+		public ImageSource Source { get; set; }
 	}
 
 	public class ColorItem

@@ -8,6 +8,7 @@
     xmlns:res="clr-namespace:PanCardView.Resources;assembly=PanCardView"
     xmlns:proc="clr-namespace:PanCardView.Processors;assembly=PanCardView"
     x:Class="PanCardViewSample.Views.CoverFlowSampleXamlView"
+    x:DataType="viewModels:CardsSampleViewModel"
     BackgroundColor="White"
     Title="CoverFlow Xaml">
 
@@ -26,7 +27,7 @@
                 </x:Arguments>
 
             <cards:CoverFlowView.ItemTemplate>
-                <DataTemplate>
+                <DataTemplate x:DataType="viewModels:CardSampleItem">
                    <Frame
                        Margin="80"
                        VerticalOptions="Center"

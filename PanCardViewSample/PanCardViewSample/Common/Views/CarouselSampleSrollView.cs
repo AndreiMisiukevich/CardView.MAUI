@@ -28,7 +28,7 @@ namespace PanCardViewSample.Views
 					}
 				}
 			};
-			_carouselView.SetBinding(CardsView.ItemsSourceProperty, nameof(CarouselSampleScrollViewModel.Items));
+			_carouselView.SetBinding(CardsView.ItemsSourceProperty, static (CarouselSampleScrollViewModel viewModel) => viewModel.Items, BindingMode.OneWay);
 
 			Title = "CarouselView scroll";
 
@@ -54,7 +54,7 @@ namespace PanCardViewSample.Views
 				VerticalOptions = LayoutOptions.Center,
 				FontAttributes = FontAttributes.Bold
 			};
-			label.SetBinding(Label.TextProperty, "Number");
+			label.SetBinding(Label.TextProperty, static (ScrollSampleItem item) => item.Number);
 
 			var scroller = new ScrollView
 			{
