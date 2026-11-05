@@ -96,13 +96,13 @@ namespace PanCardView.Controls
 
 
 
-            this.SetBinding(DiffProperty, nameof(CardsView.ProcessorDiff));
-            this.SetBinding(MaxDiffProperty, nameof(Width));
-            this.SetBinding(SelectedIndexProperty, nameof(CardsView.SelectedIndex));
-            this.SetBinding(ItemsSourceProperty, nameof(CardsView.ItemsSource));
-            this.SetBinding(IsCyclicalProperty, nameof(CardsView.IsCyclical));
-            this.SetBinding(IsUserInteractionRunningProperty, nameof(CardsView.IsUserInteractionRunning));
-            this.SetBinding(IsAutoInteractionRunningProperty, nameof(CardsView.IsAutoInteractionRunning));
+            this.SetBinding(DiffProperty, BindingBase.Create(static (CardsView source) => source.ProcessorDiff, BindingMode.OneWay));
+            this.SetBinding(MaxDiffProperty, BindingBase.Create(static (CardsView source) => source.Width, BindingMode.OneWay));
+            this.SetBinding(SelectedIndexProperty, BindingBase.Create(static (CardsView source) => source.SelectedIndex, BindingMode.OneWay));
+            this.SetBinding(ItemsSourceProperty, BindingBase.Create(static (CardsView source) => source.ItemsSource, BindingMode.OneWay));
+            this.SetBinding(IsCyclicalProperty, BindingBase.Create(static (CardsView source) => source.IsCyclical, BindingMode.OneWay));
+            this.SetBinding(IsUserInteractionRunningProperty, BindingBase.Create(static (CardsView source) => source.IsUserInteractionRunning, BindingMode.OneWay));
+            this.SetBinding(IsAutoInteractionRunningProperty, BindingBase.Create(static (CardsView source) => source.IsAutoInteractionRunning, BindingMode.OneWay));
 
 
             AbsoluteLayout.SetLayoutBounds(this, new Rect(.5, 1, -1, -1));
@@ -314,9 +314,9 @@ namespace PanCardView.Controls
                         CommandParameter = item,
                         Command = new Command(p =>
                         {
-                            this.SetBinding(SelectedIndexProperty, nameof(CardsView.SelectedIndex), BindingMode.OneWayToSource);
+                            this.SetBinding(SelectedIndexProperty, static (CardsView source) => source.SelectedIndex, BindingMode.OneWayToSource);
                             SelectedIndex = ItemsSource.FindIndex(p);
-                            this.SetBinding(SelectedIndexProperty, nameof(CardsView.SelectedIndex));
+                            this.SetBinding(SelectedIndexProperty, BindingBase.Create(static (CardsView source) => source.SelectedIndex, BindingMode.OneWay));
                         })
                     });
                     ItemsStackLayout.Children.Add(view);

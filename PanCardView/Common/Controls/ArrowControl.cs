@@ -135,13 +135,13 @@ namespace PanCardView.Controls
             Margin = new Thickness(20, 10);
             VerticalOptions = LayoutOptions.Center;
 
-            this.SetBinding(SelectedIndexProperty, nameof(CardsView.SelectedIndex));
-            this.SetBinding(ItemsCountProperty, nameof(CardsView.ItemsCount));
-            this.SetBinding(IsCyclicalProperty, nameof(CardsView.IsCyclical));
-            this.SetBinding(IsUserInteractionRunningProperty, nameof(CardsView.IsUserInteractionRunning));
-            this.SetBinding(IsAutoInteractionRunningProperty, nameof(CardsView.IsAutoInteractionRunning));
-            this.SetBinding(IsRightToLeftFlowDirectionEnabledProperty, nameof(CardsView.IsRightToLeftFlowDirectionEnabled));
-            this.SetBinding(ShouldAutoNavigateToNextProperty, nameof(CardsView.ShouldAutoNavigateToNext));
+            this.SetBinding(SelectedIndexProperty, static (CardsView source) => source.SelectedIndex, BindingMode.TwoWay);
+            this.SetBinding(ItemsCountProperty, static (CardsView source) => source.ItemsCount, BindingMode.OneWay);
+            this.SetBinding(IsCyclicalProperty, BindingBase.Create(static (CardsView source) => source.IsCyclical, BindingMode.OneWay));
+            this.SetBinding(IsUserInteractionRunningProperty, BindingBase.Create(static (CardsView source) => source.IsUserInteractionRunning, BindingMode.OneWay));
+            this.SetBinding(IsAutoInteractionRunningProperty, BindingBase.Create(static (CardsView source) => source.IsAutoInteractionRunning, BindingMode.OneWay));
+            this.SetBinding(IsRightToLeftFlowDirectionEnabledProperty, BindingBase.Create(static (CardsView source) => source.IsRightToLeftFlowDirectionEnabled, BindingMode.OneWay));
+            this.SetBinding(ShouldAutoNavigateToNextProperty, static (CardsView source) => source.ShouldAutoNavigateToNext, BindingMode.OneWayToSource);
 
             Behaviors.Add(new ProtectedControlBehavior());
 

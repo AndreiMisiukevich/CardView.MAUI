@@ -52,7 +52,7 @@ namespace PanCardView.Controls
             bindable.AsIndicatorsControl().ResetItemsSource(oldValue as IEnumerable);
         });
 
-        public static readonly BindableProperty ItemTemplateProperty = BindableProperty.Create(nameof(ItemTemplate), typeof(DataTemplate), typeof(IndicatorsControl), new DataTemplate(typeof(IndicatorItemView)), propertyChanged: (bindable, oldValue, newValue) =>
+        public static readonly BindableProperty ItemTemplateProperty = BindableProperty.Create(nameof(ItemTemplate), typeof(DataTemplate), typeof(IndicatorsControl), new DataTemplate(() => new IndicatorItemView()), propertyChanged: (bindable, oldValue, newValue) =>
         {
             bindable.AsIndicatorsControl().ResetIndicatorsLayout();
         });
@@ -73,10 +73,10 @@ namespace PanCardView.Controls
         {
             Spacing = 5;
 
-            this.SetBinding(SelectedIndexProperty, nameof(CardsView.SelectedIndex));
-            this.SetBinding(ItemsSourceProperty, nameof(CardsView.ItemsSource));
-            this.SetBinding(IsUserInteractionRunningProperty, nameof(CardsView.IsUserInteractionRunning));
-            this.SetBinding(IsAutoInteractionRunningProperty, nameof(CardsView.IsAutoInteractionRunning));
+            this.SetBinding(SelectedIndexProperty, BindingBase.Create(static (CardsView source) => source.SelectedIndex, BindingMode.OneWay));
+            this.SetBinding(ItemsSourceProperty, BindingBase.Create(static (CardsView source) => source.ItemsSource, BindingMode.OneWay));
+            this.SetBinding(IsUserInteractionRunningProperty, BindingBase.Create(static (CardsView source) => source.IsUserInteractionRunning, BindingMode.OneWay));
+            this.SetBinding(IsAutoInteractionRunningProperty, BindingBase.Create(static (CardsView source) => source.IsAutoInteractionRunning, BindingMode.OneWay));
 
             Margin = new Thickness(10, 20);
             VerticalOptions = LayoutOptions.End;
@@ -333,9 +333,9 @@ namespace PanCardView.Controls
                             {
                                 return;
                             }
-                            this.SetBinding(SelectedIndexProperty, nameof(CardsView.SelectedIndex), BindingMode.OneWayToSource);
+                            this.SetBinding(SelectedIndexProperty, static (CardsView source) => source.SelectedIndex, BindingMode.OneWayToSource);
                             SelectedIndex = ItemsSource.FindIndex(p);
-                            this.SetBinding(SelectedIndexProperty, nameof(CardsView.SelectedIndex));
+                            this.SetBinding(SelectedIndexProperty, BindingBase.Create(static (CardsView source) => source.SelectedIndex, BindingMode.OneWay));
                         })
                     });
                     Children.Add(view);

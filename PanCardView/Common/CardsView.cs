@@ -149,17 +149,9 @@ namespace PanCardView
                     return;
                 }
                 
-                value.SetBinding(IndicatorView.PositionProperty, new Binding
-                {
-                    Path = nameof(SelectedIndex),
-                    Source = this
-                });
+                value.SetBinding(IndicatorView.PositionProperty, BindingBase.Create(static (CardsView source) => source.SelectedIndex, source: this));
                 
-                value.SetBinding(IndicatorView.ItemsSourceProperty, new Binding
-                {
-                    Path = nameof(ItemsView.ItemsSource),
-                    Source = this
-                });
+                value.SetBinding(IndicatorView.ItemsSourceProperty, BindingBase.Create(static (CardsView source) => source.ItemsSource, source: this));
             }
         }
 
@@ -389,7 +381,8 @@ namespace PanCardView
         public int ItemsCount
         {
             get => (int)GetValue(ItemsCountProperty);
-            private set => SetValue(ItemsCountProperty, value);
+            // MAUI's binding source generator emits a setter delegate for typed bindings even when they are one-way.
+            internal set => SetValue(ItemsCountProperty, value);
         }
 
         public bool IsUserInteractionEnabled
