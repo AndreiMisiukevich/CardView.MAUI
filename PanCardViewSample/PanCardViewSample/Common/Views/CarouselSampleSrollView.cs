@@ -54,7 +54,7 @@ namespace PanCardViewSample.Views
 				VerticalOptions = LayoutOptions.Center,
 				FontAttributes = FontAttributes.Bold
 			};
-			label.SetBinding(Label.TextProperty, static (ScrollSampleItem item) => item.Number);
+			label.SetBinding(Label.TextProperty, static (ScrollSampleItem item) => item.Number, BindingMode.OneWay);
 
 			var scroller = new ScrollView
 			{

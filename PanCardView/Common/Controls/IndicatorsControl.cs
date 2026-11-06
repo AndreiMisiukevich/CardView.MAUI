@@ -5,6 +5,7 @@ using static PanCardView.Controls.Styles.DefaultIndicatorItemStyles;
 using PanCardView.Utility;
 using System.ComponentModel;
 using System.Collections.Specialized;
+using System.Diagnostics.CodeAnalysis;
 
 namespace PanCardView.Controls
 {
@@ -68,15 +69,11 @@ namespace PanCardView.Controls
         }
 
         private CancellationTokenSource _fadeAnimationTokenSource;
+        private CardsViewBindingContextKind? _bindingContextKind;
 
         public IndicatorsControl()
         {
             Spacing = 5;
-
-            this.SetBinding(SelectedIndexProperty, BindingBase.Create(static (CardsView source) => source.SelectedIndex, BindingMode.OneWay));
-            this.SetBinding(ItemsSourceProperty, BindingBase.Create(static (CardsView source) => source.ItemsSource, BindingMode.OneWay));
-            this.SetBinding(IsUserInteractionRunningProperty, BindingBase.Create(static (CardsView source) => source.IsUserInteractionRunning, BindingMode.OneWay));
-            this.SetBinding(IsAutoInteractionRunningProperty, BindingBase.Create(static (CardsView source) => source.IsAutoInteractionRunning, BindingMode.OneWay));
 
             Margin = new Thickness(10, 20);
             VerticalOptions = LayoutOptions.End;
@@ -177,7 +174,85 @@ namespace PanCardView.Controls
             {
                 BindingContext = Parent;
             }
+
+            UpdateBindings();
         }
+
+        protected override void OnBindingContextChanged()
+        {
+            base.OnBindingContextChanged();
+            UpdateBindings();
+            ResetIndicatorsLayout();
+        }
+
+        private void UpdateBindings()
+        {
+            var bindingContextKind = this.GetCardsViewBindingContextKind();
+            if (_bindingContextKind == bindingContextKind)
+            {
+                return;
+            }
+
+            _bindingContextKind = bindingContextKind;
+
+            switch (bindingContextKind)
+            {
+                case CardsViewBindingContextKind.CardsView:
+                    BindToCardsView();
+                    break;
+                case CardsViewBindingContextKind.TypedCustomContext:
+                    BindToTypedCustomContext();
+                    break;
+                default:
+                    BindToLegacyCustomContext();
+                    break;
+            }
+        }
+
+        private void BindToCardsView()
+        {
+            this.SetBinding(SelectedIndexProperty, static (CardsView source) => source.SelectedIndex, BindingMode.OneWay);
+            this.SetBinding(ItemsSourceProperty, static (CardsView source) => source.ItemsSource, BindingMode.OneWay);
+            this.SetBinding(IsUserInteractionRunningProperty, static (CardsView source) => source.IsUserInteractionRunning, BindingMode.OneWay);
+            this.SetBinding(IsAutoInteractionRunningProperty, static (CardsView source) => source.IsAutoInteractionRunning, BindingMode.OneWay);
+        }
+
+        private void BindToTypedCustomContext()
+        {
+            this.SetBinding(SelectedIndexProperty, static (ICardsViewBindingContext source) => source.SelectedIndex, BindingMode.OneWay);
+            this.SetBinding(ItemsSourceProperty, static (ICardsViewBindingContext source) => source.ItemsSource, BindingMode.OneWay);
+            this.SetBinding(IsUserInteractionRunningProperty, static (ICardsViewBindingContext source) => source.IsUserInteractionRunning, BindingMode.OneWay);
+            this.SetBinding(IsAutoInteractionRunningProperty, static (ICardsViewBindingContext source) => source.IsAutoInteractionRunning, BindingMode.OneWay);
+        }
+
+        [RequiresUnreferencedCode("Uses legacy string-path bindings for custom view models. Preserve their bound properties or implement ICardsViewBindingContext for trimmed applications.")]
+        private void BindToLegacyCustomContext()
+        {
+            this.SetBinding(SelectedIndexProperty, nameof(CardsView.SelectedIndex), BindingMode.OneWay);
+            this.SetBinding(ItemsSourceProperty, nameof(CardsView.ItemsSource), BindingMode.OneWay);
+            this.SetBinding(IsUserInteractionRunningProperty, nameof(CardsView.IsUserInteractionRunning), BindingMode.OneWay);
+            this.SetBinding(IsAutoInteractionRunningProperty, nameof(CardsView.IsAutoInteractionRunning), BindingMode.OneWay);
+        }
+
+        private void SetSelectedIndexBinding(BindingMode mode)
+        {
+            switch (this.GetCardsViewBindingContextKind())
+            {
+                case CardsViewBindingContextKind.CardsView:
+                    this.SetBinding(SelectedIndexProperty, static (CardsView source) => source.SelectedIndex, mode);
+                    break;
+                case CardsViewBindingContextKind.TypedCustomContext:
+                    this.SetBinding(SelectedIndexProperty, static (ICardsViewBindingContext source) => source.SelectedIndex, mode);
+                    break;
+                default:
+                    SetLegacySelectedIndexBinding(mode);
+                    break;
+            }
+        }
+
+        [RequiresUnreferencedCode("Uses a legacy string-path binding for custom view models. Preserve their SelectedIndex property or implement ICardsViewBindingContext for trimmed applications.")]
+        private void SetLegacySelectedIndexBinding(BindingMode mode)
+            => this.SetBinding(SelectedIndexProperty, nameof(CardsView.SelectedIndex), mode);
 
         protected virtual void ApplySelectedStyle(View view, int index)
         => view.Style = SelectedIndicatorStyle;
@@ -333,9 +408,9 @@ namespace PanCardView.Controls
                             {
                                 return;
                             }
-                            this.SetBinding(SelectedIndexProperty, static (CardsView source) => source.SelectedIndex, BindingMode.OneWayToSource);
+                            SetSelectedIndexBinding(BindingMode.OneWayToSource);
                             SelectedIndex = ItemsSource.FindIndex(p);
-                            this.SetBinding(SelectedIndexProperty, BindingBase.Create(static (CardsView source) => source.SelectedIndex, BindingMode.OneWay));
+                            SetSelectedIndexBinding(BindingMode.OneWay);
                         })
                     });
                     Children.Add(view);

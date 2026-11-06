@@ -22,14 +22,14 @@ namespace PanCardViewSample.Views
 				Text = "**Prev**",
 				CommandParameter = false
 			};
-			prevItem.SetBinding(MenuItem.CommandProperty, static (CardsSampleViewModel viewModel) => viewModel.PanPositionChangedCommand);
+			prevItem.SetBinding(MenuItem.CommandProperty, static (CardsSampleViewModel viewModel) => viewModel.PanPositionChangedCommand, BindingMode.OneWay);
 
 			var nextItem = new ToolbarItem
 			{
 				Text = "**Next**",
 				CommandParameter = true
 			};
-			nextItem.SetBinding(MenuItem.CommandProperty, static (CardsSampleViewModel viewModel) => viewModel.PanPositionChangedCommand);
+			nextItem.SetBinding(MenuItem.CommandProperty, static (CardsSampleViewModel viewModel) => viewModel.PanPositionChangedCommand, BindingMode.OneWay);
 
 			ToolbarItems.Add(prevItem);
 			ToolbarItems.Add(nextItem);
@@ -49,7 +49,7 @@ namespace PanCardViewSample.Views
 				Margin = new Thickness(0, 0, 0, 10)
 			};
 
-			removeButton.SetBinding(Button.CommandProperty, static (CardsSampleViewModel viewModel) => viewModel.RemoveCurrentItemCommand);
+			removeButton.SetBinding(Button.CommandProperty, static (CardsSampleViewModel viewModel) => viewModel.RemoveCurrentItemCommand, BindingMode.OneWay);
 
 			AbsoluteLayout.SetLayoutFlags(removeButton, AbsoluteLayoutFlags.PositionProportional);
 			AbsoluteLayout.SetLayoutBounds(removeButton, new Rect(.5, 1, 150, 40));

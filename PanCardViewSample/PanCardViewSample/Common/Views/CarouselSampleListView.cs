@@ -53,13 +53,13 @@ namespace PanCardViewSample.Views
 					{
 						TextColor = Colors.White
 					};
-					label.SetBinding(Label.TextProperty, static (ListItemModel item) => item.Text);
+					label.SetBinding(Label.TextProperty, static (ListItemModel item) => item.Text, BindingMode.OneWay);
 
 					var content = new ContentView();
 					content.Content = label;
 
 					var tapGesture = new TapGestureRecognizer();
-					tapGesture.SetBinding(TapGestureRecognizer.CommandProperty, static (ListItemModel item) => item.Command);
+					tapGesture.SetBinding(TapGestureRecognizer.CommandProperty, static (ListItemModel item) => item.Command, BindingMode.OneWay);
 					content.GestureRecognizers.Add(tapGesture);
 
 					return new ViewCell

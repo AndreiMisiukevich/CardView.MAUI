@@ -1,44 +1,31 @@
 # NativeAOT and trimming
 
-The library targets .NET 10 and opts into `IsAotCompatible` and the trim analyzer. The SDK also enables the AOT and single-file analyzers through `IsAotCompatible`. MAUI normally disables trim analysis for projects that are not publishing with full trimming or NativeAOT; `_MauiDoNotConfigureTrimAnalyzer` keeps the library's explicit analyzer opt-in enabled for normal target builds.
+## Library support
 
-## Library changes
+The library enables `IsAotCompatible` and trim analysis. Its built-in arrows, indicators, and tabs use expression-based bindings for the `CardsView` context and for custom contexts implementing `ICardsViewBindingContext`. The interface lists the properties those controls consume.
 
-- Internal bindings now use MAUI's expression-based binding APIs with explicit binding modes. This keeps binding members statically referenced and preserves the prior one-way, two-way, and one-way-to-source behavior.
-- `CardsView.ItemsCount` keeps its public getter-only API. Its setter is assembly-internal so MAUI's binding source generator can emit its typed setter delegate; the library's binding is explicitly one-way.
-- The default indicator `DataTemplate` uses a statically analyzable factory, and embedded-resource assembly access uses `typeof(ResourcesInfo).Assembly`.
-- Sample carousel items now use a concrete typed model and `ImageSource`, with compiled C# and XAML bindings. This avoids trim-unsafe string paths for the sample's `Source` and `Color` properties.
-- No broad linker descriptors or preservation attributes were added.
+For backwards compatibility, custom contexts that do not implement the interface continue to use string-path bindings. Those legacy paths are marked `RequiresUnreferencedCode`; trimmed applications must preserve the bound properties. Implementing `ICardsViewBindingContext` enables statically analyzable bindings. Custom contexts should also implement `INotifyPropertyChanged` so updates to the bound values propagate. The library does not add broad linker descriptors or suppressions.
+
+The built-in indicator template uses a factory that creates `IndicatorItemView` directly. Sample item models and bindings are statically typed. `Styles.xaml` puts the non-Windows color in `OnPlatform.Default`, which preserves the fallback on iOS, Android, and Mac Catalyst under the MAUI 10 XAML compiler.
 
 ## Validation
 
-On .NET SDK 10.0.403 with MAUI workload 10.0.110, Release builds of the library succeeded for `net10.0`, `net10.0-ios`, `net10.0-android`, and `net10.0-maccatalyst` with trimming and AOT analyzers enabled. They reported no IL2xxx or IL3xxx warnings from the library.
+Release builds of the library succeeded for `net10.0`, `net10.0-ios`, `net10.0-android`, and `net10.0-maccatalyst` with .NET SDK 10.0.403 and MAUI workload 10.0.110. The library reports five IL2026 warnings from the intentional legacy string-path compatibility branches. It reports no other IL2xxx or IL3xxx warnings. Existing compiler warnings include obsolete MAUI APIs (`ViewCell`, animation methods, and `VisualElement.Layout`).
 
-The sample's device NativeAOT publish completed for `ios-arm64` and produced a signed development IPA:
+A device publish with `PublishAot=true` succeeded for `ios-arm64`; the publish ran ILC and produced a native ARM64 executable without managed application DLLs. The resulting IPA was installed and launched on a physical iPhone. This confirms publish and startup; a complete interactive test matrix is not recorded.
+
+An Android Release APK was published with `PublishAot=true`, installed on a physical device, and launched successfully. This confirms NativeAOT publishing and device startup for the sample; a complete interaction matrix was not recorded. Android NativeAOT is experimental in .NET MAUI.
+
+A standard, non-NativeAOT iOS Simulator build launched and displayed the sample. This is a Mono simulator run and does not validate NativeAOT on the simulator. The installed .NET 10 iOS SDK rejects `iossimulator-arm64` for NativeAOT with `NETSDK1203` because simulator architecture RIDs are not supported for this publish scenario.
+
+The iOS NativeAOT publish also reports linker/AOT diagnostics from Microsoft.Maui and its platform/compatibility dependencies, including IL2037, IL2104, and IL3053. These are dependency diagnostics, not warnings originating in the library. The library's five IL2026 warnings are the only IL2xxx/IL3xxx warnings attributed to `PanCardView` in the recorded builds. The sample currently demonstrates the default `CardsView` context; it has no dedicated custom-context interaction test. In particular, arrows, indicator taps, tabs, and live replacement of an `ICardsViewBindingContext` have not been verified together at runtime.
+
+## Device publish example
 
 ```sh
 dotnet publish PanCardViewSample/PanCardViewSample/PanCardViewSample.csproj \
-  -c Release -f net10.0-ios -r ios-arm64 -p:PublishAot=true
+  -c Release -f net10.0-ios \
+  -p:PublishAot=true
 ```
 
-The local development identity and a matching provisioning profile were detected, and the IPA contains the `ios-arm64` native executable without managed DLLs. Local `codesign --verify` reported `CSSMERR_TP_NOT_TRUSTED`. After the sample binding changes, the user installed and ran the IPA on a physical iPhone and tested the APK; both sample builds were reported to work. This validates a real NativeAOT device launch. The user did not report detailed interactive coverage of every carousel mode, indicator, gesture, and animation.
-
-The requested iOS Simulator NativeAOT publish was attempted with `iossimulator-arm64` and `PublishAot=true`. The installed .NET 10 iOS SDK rejected `dotnet publish` with:
-
-```text
-A runtime identifier for a device architecture must be specified in order to publish this project.
-'iossimulator-arm64' is a simulator architecture.
-```
-
-A separate Release build for that simulator RID with `PublishAot=true` resolved `UseMonoRuntime=true` and did not select NativeAOT. It was stopped before treating its incomplete output as an app. A standard simulator Release build with signing enabled then succeeded, installed, and launched on the booted iPhone 17 Pro simulator (iOS 26.5). Its first screen rendered the sample demo list, the process remained running, and no app error/fault entries appeared in the checked simulator log interval. Direct touch automation was unavailable in this session, so carousel navigation, indicators, gestures, and animation were not interactively exercised. An earlier simulator launch with code signing disabled was rejected by iOS with `SIGKILL (Code Signature Invalid)`; the signed standard build launched successfully. These simulator results are a Mono/managed runtime regression check, not NativeAOT validation.
-
-The sample also built in Release for Android and its APK was tested by the user. The sample's Mac Catalyst build could not be validated with the installed workload: the project declares minimum 15.0, while this workload requires 17.0. The repository contains no test project.
-
-## Remaining warnings and limits
-
-- The library builds still report six existing CS0618 warnings per target for `ViewCell`, `FadeTo`, `ScaleTo`, and `VisualElement.Layout`.
-- After converting sample item bindings to compiled bindings and replacing the trim-unsafe `OnPlatform` extension, the sample publish reports no IL2026, IL3050, or XC0022 diagnostics from sample code or generated XAML.
-- The publish still reports IL2037, IL2104, and IL3053 diagnostics from Microsoft.Maui compatibility/platform assemblies. They originate outside this library and sample source.
-- The sample's MAUI dependency warnings mean this publish does not establish warning-free NativeAOT compatibility for the complete sample application. Applications using the library should compile their bindings and avoid runtime XAML/type-resolution patterns that MAUI marks as trim- or AOT-unsafe.
-- The .NET 10 iOS SDK installed here does not support NativeAOT publish for `iossimulator-arm64`; only the device `ios-arm64` NativeAOT publish succeeded. Simulator NativeAOT execution therefore remains unvalidated.
-- Windows was not built because this host is macOS and the project only includes its Windows target on Windows.
+For device publishing, the iOS workload selects `ios-arm64`. Do not set `iossimulator-arm64` for NativeAOT publishing with the installed .NET 10 SDK.

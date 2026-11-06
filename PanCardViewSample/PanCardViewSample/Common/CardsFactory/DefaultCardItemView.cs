@@ -19,7 +19,7 @@ namespace PanCardViewSample.CardsFactory
 				CornerRadius = 10,
 				IsClippedToBounds = true
 			};
-			frame.SetBinding(BackgroundColorProperty, static (CardSampleItem item) => item.Color);
+		frame.SetBinding(BackgroundColorProperty, static (CardSampleItem item) => item.Color, BindingMode.OneWay);
 
             AbsoluteLayout.SetLayoutFlags(frame, AbsoluteLayoutFlags.PositionProportional);
             AbsoluteLayout.SetLayoutBounds(frame, new Rect(.5, .5, 300, 300));
@@ -30,7 +30,7 @@ namespace PanCardViewSample.CardsFactory
 				Aspect = Aspect.AspectFill
 			};
 
-			image.SetBinding(Image.SourceProperty, static (CardSampleItem item) => item.Source);
+		image.SetBinding(Image.SourceProperty, static (CardSampleItem item) => item.Source, BindingMode.OneWay);
 
 			frame.Content = image;
 		}

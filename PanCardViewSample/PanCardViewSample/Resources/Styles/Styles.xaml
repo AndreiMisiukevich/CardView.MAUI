@@ -358,9 +358,8 @@
     <Style TargetType="Shell" ApplyToDerivedTypes="True">
         <Setter Property="Shell.BackgroundColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Gray950}}" />
         <Setter Property="Shell.ForegroundColor">
-            <OnPlatform x:TypeArguments="Color">
+            <OnPlatform x:TypeArguments="Color" Default="{StaticResource White}">
                 <On Platform="WinUI" Value="{StaticResource Primary}" />
-                <On Platform="Default" Value="{StaticResource White}" />
             </OnPlatform>
         </Setter>
         <Setter Property="Shell.TitleColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource White}}" />

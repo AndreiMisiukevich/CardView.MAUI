@@ -149,9 +149,9 @@ namespace PanCardView
                     return;
                 }
                 
-                value.SetBinding(IndicatorView.PositionProperty, BindingBase.Create(static (CardsView source) => source.SelectedIndex, source: this));
+                value.SetBinding(IndicatorView.PositionProperty, static (CardsView source) => source.SelectedIndex, BindingMode.TwoWay, source: this);
                 
-                value.SetBinding(IndicatorView.ItemsSourceProperty, BindingBase.Create(static (CardsView source) => source.ItemsSource, source: this));
+                value.SetBinding(IndicatorView.ItemsSourceProperty, static (CardsView source) => source.ItemsSource, BindingMode.OneWay, source: this);
             }
         }
 
