@@ -6,6 +6,8 @@ The library enables `IsAotCompatible` and trim analysis. Its built-in arrows, in
 
 For backwards compatibility, custom contexts that do not implement the interface continue to use string-path bindings. Those legacy paths are marked `RequiresUnreferencedCode`; trimmed applications must preserve the bound properties. Implementing `ICardsViewBindingContext` enables statically analyzable bindings. Custom contexts should also implement `INotifyPropertyChanged` so updates to the bound values propagate. The library does not add broad linker descriptors or suppressions.
 
+The built-in controls install a default binding only when the corresponding bindable property has not already been set by the application. They track which defaults they installed so a change between the supported binding-context kinds can refresh library-owned bindings without replacing configuration present before initialization.
+
 The built-in indicator template uses a factory that creates `IndicatorItemView` directly. Sample item models and bindings are statically typed. `Styles.xaml` puts the non-Windows color in `OnPlatform.Default`, which preserves the fallback on iOS, Android, and Mac Catalyst under the MAUI 10 XAML compiler.
 
 ## Validation
@@ -18,7 +20,7 @@ An Android Release APK was published with `PublishAot=true`, installed on a phys
 
 A standard, non-NativeAOT iOS Simulator build launched and displayed the sample. This is a Mono simulator run and does not validate NativeAOT on the simulator. The installed .NET 10 iOS SDK rejects `iossimulator-arm64` for NativeAOT with `NETSDK1203` because simulator architecture RIDs are not supported for this publish scenario.
 
-The iOS NativeAOT publish also reports linker/AOT diagnostics from Microsoft.Maui and its platform/compatibility dependencies, including IL2037, IL2104, and IL3053. These are dependency diagnostics, not warnings originating in the library. The library's five IL2026 warnings are the only IL2xxx/IL3xxx warnings attributed to `PanCardView` in the recorded builds. The sample currently demonstrates the default `CardsView` context; it has no dedicated custom-context interaction test. In particular, arrows, indicator taps, tabs, and live replacement of an `ICardsViewBindingContext` have not been verified together at runtime.
+The iOS NativeAOT publish also reports linker/AOT diagnostics from Microsoft.Maui and its platform/compatibility dependencies, including IL2037, IL2104, and IL3053. These are dependency diagnostics, not warnings originating in the library. The library's five IL2026 warnings are the only IL2xxx/IL3xxx warnings attributed to `PanCardView` in the recorded builds. The sample demonstrates the default `CardsView` context. Runtime binding checks in the iOS Simulator used standard Debug/Mono compilation with `PublishAot=false`. They confirmed that `ArrowControl.ItemsCount = 3` survives attachment, an explicit `ItemsCount` binding retains its initial value and updates when the ViewModel changes, and explicit plus bound `ItemsSource` values in `IndicatorsControl` and `TabsControl` survive attachment and update. Animation callbacks were disabled in these checks to isolate binding behavior. Gesture navigation, indicator and tab taps, context replacement, and NativeAOT runtime behavior were not tested in that run.
 
 ## Device publish example
 

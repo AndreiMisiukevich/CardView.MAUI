@@ -53,6 +53,7 @@ namespace PanCardView.Controls
 
         private CancellationTokenSource _fadeAnimationTokenSource;
         private CardsViewBindingContextKind? _bindingContextKind;
+        private ControlBindingManager _bindingManager;
 
         public int SelectedIndex
         {
@@ -195,37 +196,42 @@ namespace PanCardView.Controls
 
         private void BindToCardsView()
         {
-            this.SetBinding(SelectedIndexProperty, static (CardsView source) => source.SelectedIndex, BindingMode.TwoWay);
-            this.SetBinding(ItemsCountProperty, static (CardsView source) => source.ItemsCount, BindingMode.OneWay);
-            this.SetBinding(IsCyclicalProperty, static (CardsView source) => source.IsCyclical, BindingMode.OneWay);
-            this.SetBinding(IsUserInteractionRunningProperty, static (CardsView source) => source.IsUserInteractionRunning, BindingMode.OneWay);
-            this.SetBinding(IsAutoInteractionRunningProperty, static (CardsView source) => source.IsAutoInteractionRunning, BindingMode.OneWay);
-            this.SetBinding(IsRightToLeftFlowDirectionEnabledProperty, static (CardsView source) => source.IsRightToLeftFlowDirectionEnabled, BindingMode.OneWay);
-            this.SetBinding(ShouldAutoNavigateToNextProperty, static (CardsView source) => source.ShouldAutoNavigateToNext, BindingMode.OneWayToSource);
+            SetDefaultBinding(SelectedIndexProperty, () => this.SetBinding(SelectedIndexProperty, static (CardsView source) => source.SelectedIndex, BindingMode.TwoWay));
+            SetDefaultBinding(ItemsCountProperty, () => this.SetBinding(ItemsCountProperty, static (CardsView source) => source.ItemsCount, BindingMode.OneWay));
+            SetDefaultBinding(IsCyclicalProperty, () => this.SetBinding(IsCyclicalProperty, static (CardsView source) => source.IsCyclical, BindingMode.OneWay));
+            SetDefaultBinding(IsUserInteractionRunningProperty, () => this.SetBinding(IsUserInteractionRunningProperty, static (CardsView source) => source.IsUserInteractionRunning, BindingMode.OneWay));
+            SetDefaultBinding(IsAutoInteractionRunningProperty, () => this.SetBinding(IsAutoInteractionRunningProperty, static (CardsView source) => source.IsAutoInteractionRunning, BindingMode.OneWay));
+            SetDefaultBinding(IsRightToLeftFlowDirectionEnabledProperty, () => this.SetBinding(IsRightToLeftFlowDirectionEnabledProperty, static (CardsView source) => source.IsRightToLeftFlowDirectionEnabled, BindingMode.OneWay));
+            SetDefaultBinding(ShouldAutoNavigateToNextProperty, () => this.SetBinding(ShouldAutoNavigateToNextProperty, static (CardsView source) => source.ShouldAutoNavigateToNext, BindingMode.OneWayToSource));
         }
 
         private void BindToTypedCustomContext()
         {
-            this.SetBinding(SelectedIndexProperty, static (ICardsViewBindingContext source) => source.SelectedIndex, BindingMode.TwoWay);
-            this.SetBinding(ItemsCountProperty, static (ICardsViewBindingContext source) => source.ItemsCount, BindingMode.OneWay);
-            this.SetBinding(IsCyclicalProperty, static (ICardsViewBindingContext source) => source.IsCyclical, BindingMode.OneWay);
-            this.SetBinding(IsUserInteractionRunningProperty, static (ICardsViewBindingContext source) => source.IsUserInteractionRunning, BindingMode.OneWay);
-            this.SetBinding(IsAutoInteractionRunningProperty, static (ICardsViewBindingContext source) => source.IsAutoInteractionRunning, BindingMode.OneWay);
-            this.SetBinding(IsRightToLeftFlowDirectionEnabledProperty, static (ICardsViewBindingContext source) => source.IsRightToLeftFlowDirectionEnabled, BindingMode.OneWay);
-            this.SetBinding(ShouldAutoNavigateToNextProperty, static (ICardsViewBindingContext source) => source.ShouldAutoNavigateToNext, BindingMode.OneWayToSource);
+            SetDefaultBinding(SelectedIndexProperty, () => this.SetBinding(SelectedIndexProperty, static (ICardsViewBindingContext source) => source.SelectedIndex, BindingMode.TwoWay));
+            SetDefaultBinding(ItemsCountProperty, () => this.SetBinding(ItemsCountProperty, static (ICardsViewBindingContext source) => source.ItemsCount, BindingMode.OneWay));
+            SetDefaultBinding(IsCyclicalProperty, () => this.SetBinding(IsCyclicalProperty, static (ICardsViewBindingContext source) => source.IsCyclical, BindingMode.OneWay));
+            SetDefaultBinding(IsUserInteractionRunningProperty, () => this.SetBinding(IsUserInteractionRunningProperty, static (ICardsViewBindingContext source) => source.IsUserInteractionRunning, BindingMode.OneWay));
+            SetDefaultBinding(IsAutoInteractionRunningProperty, () => this.SetBinding(IsAutoInteractionRunningProperty, static (ICardsViewBindingContext source) => source.IsAutoInteractionRunning, BindingMode.OneWay));
+            SetDefaultBinding(IsRightToLeftFlowDirectionEnabledProperty, () => this.SetBinding(IsRightToLeftFlowDirectionEnabledProperty, static (ICardsViewBindingContext source) => source.IsRightToLeftFlowDirectionEnabled, BindingMode.OneWay));
+            SetDefaultBinding(ShouldAutoNavigateToNextProperty, () => this.SetBinding(ShouldAutoNavigateToNextProperty, static (ICardsViewBindingContext source) => source.ShouldAutoNavigateToNext, BindingMode.OneWayToSource));
         }
 
         [RequiresUnreferencedCode("Uses legacy string-path bindings for custom view models. Preserve their bound properties or implement ICardsViewBindingContext for trimmed applications.")]
         private void BindToLegacyCustomContext()
         {
-            this.SetBinding(SelectedIndexProperty, nameof(CardsView.SelectedIndex), BindingMode.TwoWay);
-            this.SetBinding(ItemsCountProperty, nameof(CardsView.ItemsCount), BindingMode.OneWay);
-            this.SetBinding(IsCyclicalProperty, nameof(CardsView.IsCyclical), BindingMode.OneWay);
-            this.SetBinding(IsUserInteractionRunningProperty, nameof(CardsView.IsUserInteractionRunning), BindingMode.OneWay);
-            this.SetBinding(IsAutoInteractionRunningProperty, nameof(CardsView.IsAutoInteractionRunning), BindingMode.OneWay);
-            this.SetBinding(IsRightToLeftFlowDirectionEnabledProperty, nameof(CardsView.IsRightToLeftFlowDirectionEnabled), BindingMode.OneWay);
-            this.SetBinding(ShouldAutoNavigateToNextProperty, nameof(CardsView.ShouldAutoNavigateToNext), BindingMode.OneWayToSource);
+            SetDefaultBinding(SelectedIndexProperty, () => this.SetBinding(SelectedIndexProperty, nameof(CardsView.SelectedIndex), BindingMode.TwoWay));
+            SetDefaultBinding(ItemsCountProperty, () => this.SetBinding(ItemsCountProperty, nameof(CardsView.ItemsCount), BindingMode.OneWay));
+            SetDefaultBinding(IsCyclicalProperty, () => this.SetBinding(IsCyclicalProperty, nameof(CardsView.IsCyclical), BindingMode.OneWay));
+            SetDefaultBinding(IsUserInteractionRunningProperty, () => this.SetBinding(IsUserInteractionRunningProperty, nameof(CardsView.IsUserInteractionRunning), BindingMode.OneWay));
+            SetDefaultBinding(IsAutoInteractionRunningProperty, () => this.SetBinding(IsAutoInteractionRunningProperty, nameof(CardsView.IsAutoInteractionRunning), BindingMode.OneWay));
+            SetDefaultBinding(IsRightToLeftFlowDirectionEnabledProperty, () => this.SetBinding(IsRightToLeftFlowDirectionEnabledProperty, nameof(CardsView.IsRightToLeftFlowDirectionEnabled), BindingMode.OneWay));
+            SetDefaultBinding(ShouldAutoNavigateToNextProperty, () => this.SetBinding(ShouldAutoNavigateToNextProperty, nameof(CardsView.ShouldAutoNavigateToNext), BindingMode.OneWayToSource));
         }
+
+        private void SetDefaultBinding(BindableProperty property, Action setBinding)
+            => BindingManager.SetDefaultBinding(property, setBinding);
+
+        private ControlBindingManager BindingManager => _bindingManager ??= new(this);
 
         protected virtual async void ResetVisibility(uint? appearingTime = null, Easing appearingEasing = null, uint? dissappearingTime = null, Easing disappearingEasing = null)
         {
