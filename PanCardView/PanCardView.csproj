@@ -29,11 +29,11 @@
 	    <PackageLicenseExpression>MIT</PackageLicenseExpression>
 	    <PackageProjectUrl>https://github.com/AndreiMisiukevich/CardView.MAUI</PackageProjectUrl>
 	    <RepositoryUrl>https://github.com/AndreiMisiukevich/CardView.MAUI</RepositoryUrl>
-	    <PackageReleaseNotes>Bug fixes</PackageReleaseNotes>
+	    <PackageReleaseNotes>NativeAOT and trimming compatibility improvements.</PackageReleaseNotes>
 	    <Title>CardsView.Maui</Title>
 	    <Description>This package allows to create classic CarouselView, CoverFlowView, CardsView and CubeView.</Description>
 	    <PackageIcon>icon.png</PackageIcon>
-	    <Version>1.2.0</Version>
+	    <Version>1.3.0</Version>
 	    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
 	    <PackageTags>carouselview, cardsview, coverflowview, carousel view, cards view, maui, dotnet, carousel, card, cards, cardview, swipeview, swiperview, swipe, tinder swiper, coverflow, cubeView, cube, tabsView, tabView, tabControl, tabsControl, tabs, tab</PackageTags>
 	    <Configurations>Debug;Release</Configurations>
