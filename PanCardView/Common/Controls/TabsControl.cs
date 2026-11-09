@@ -7,6 +7,7 @@ using PanCardView.Extensions;
 using PanCardView.Utility;
 using static System.Math;
 using Microsoft.Maui.Layouts;
+using System.Diagnostics.CodeAnalysis;
 
 namespace PanCardView.Controls
 {
@@ -73,6 +74,9 @@ namespace PanCardView.Controls
             bindable.AsTabsView().ResetItemsLayout();
         });
 
+        private CardsViewBindingContextKind? _bindingContextKind;
+        private ControlBindingManager _bindingManager;
+
         static TabsControl()
         {
         }
@@ -94,15 +98,6 @@ namespace PanCardView.Controls
             AbsoluteLayout.SetLayoutFlags(AdditionalStripeView, AbsoluteLayoutFlags.YProportional);
 
 
-
-
-            this.SetBinding(DiffProperty, nameof(CardsView.ProcessorDiff));
-            this.SetBinding(MaxDiffProperty, nameof(Width));
-            this.SetBinding(SelectedIndexProperty, nameof(CardsView.SelectedIndex));
-            this.SetBinding(ItemsSourceProperty, nameof(CardsView.ItemsSource));
-            this.SetBinding(IsCyclicalProperty, nameof(CardsView.IsCyclical));
-            this.SetBinding(IsUserInteractionRunningProperty, nameof(CardsView.IsUserInteractionRunning));
-            this.SetBinding(IsAutoInteractionRunningProperty, nameof(CardsView.IsAutoInteractionRunning));
 
 
             AbsoluteLayout.SetLayoutBounds(this, new Rect(.5, 1, -1, -1));
@@ -264,13 +259,99 @@ namespace PanCardView.Controls
             {
                 BindingContext = Parent;
             }
+
+            UpdateBindings();
         }
 
         protected override void OnBindingContextChanged()
         {
             base.OnBindingContextChanged();
+            UpdateBindings();
             ResetItemsLayout();
         }
+
+        private void UpdateBindings()
+        {
+            var bindingContextKind = this.GetCardsViewBindingContextKind();
+            if (_bindingContextKind == bindingContextKind)
+            {
+                return;
+            }
+
+            _bindingContextKind = bindingContextKind;
+
+            switch (bindingContextKind)
+            {
+                case CardsViewBindingContextKind.CardsView:
+                    BindToCardsView();
+                    break;
+                case CardsViewBindingContextKind.TypedCustomContext:
+                    BindToTypedCustomContext();
+                    break;
+                default:
+                    BindToLegacyCustomContext();
+                    break;
+            }
+        }
+
+        private void BindToCardsView()
+        {
+            SetDefaultBinding(DiffProperty, () => this.SetBinding(DiffProperty, static (CardsView source) => source.ProcessorDiff, BindingMode.OneWay));
+            SetDefaultBinding(MaxDiffProperty, () => this.SetBinding(MaxDiffProperty, static (CardsView source) => source.Width, BindingMode.OneWay));
+            SetDefaultBinding(SelectedIndexProperty, () => this.SetBinding(SelectedIndexProperty, static (CardsView source) => source.SelectedIndex, BindingMode.OneWay));
+            SetDefaultBinding(ItemsSourceProperty, () => this.SetBinding(ItemsSourceProperty, static (CardsView source) => source.ItemsSource, BindingMode.OneWay));
+            SetDefaultBinding(IsCyclicalProperty, () => this.SetBinding(IsCyclicalProperty, static (CardsView source) => source.IsCyclical, BindingMode.OneWay));
+            SetDefaultBinding(IsUserInteractionRunningProperty, () => this.SetBinding(IsUserInteractionRunningProperty, static (CardsView source) => source.IsUserInteractionRunning, BindingMode.OneWay));
+            SetDefaultBinding(IsAutoInteractionRunningProperty, () => this.SetBinding(IsAutoInteractionRunningProperty, static (CardsView source) => source.IsAutoInteractionRunning, BindingMode.OneWay));
+        }
+
+        private void BindToTypedCustomContext()
+        {
+            SetDefaultBinding(DiffProperty, () => this.SetBinding(DiffProperty, static (ICardsViewBindingContext source) => source.ProcessorDiff, BindingMode.OneWay));
+            SetDefaultBinding(MaxDiffProperty, () => this.SetBinding(MaxDiffProperty, static (ICardsViewBindingContext source) => source.Width, BindingMode.OneWay));
+            SetDefaultBinding(SelectedIndexProperty, () => this.SetBinding(SelectedIndexProperty, static (ICardsViewBindingContext source) => source.SelectedIndex, BindingMode.OneWay));
+            SetDefaultBinding(ItemsSourceProperty, () => this.SetBinding(ItemsSourceProperty, static (ICardsViewBindingContext source) => source.ItemsSource, BindingMode.OneWay));
+            SetDefaultBinding(IsCyclicalProperty, () => this.SetBinding(IsCyclicalProperty, static (ICardsViewBindingContext source) => source.IsCyclical, BindingMode.OneWay));
+            SetDefaultBinding(IsUserInteractionRunningProperty, () => this.SetBinding(IsUserInteractionRunningProperty, static (ICardsViewBindingContext source) => source.IsUserInteractionRunning, BindingMode.OneWay));
+            SetDefaultBinding(IsAutoInteractionRunningProperty, () => this.SetBinding(IsAutoInteractionRunningProperty, static (ICardsViewBindingContext source) => source.IsAutoInteractionRunning, BindingMode.OneWay));
+        }
+
+        [RequiresUnreferencedCode("Uses legacy string-path bindings for custom view models. Preserve their bound properties or implement ICardsViewBindingContext for trimmed applications.")]
+        private void BindToLegacyCustomContext()
+        {
+            SetDefaultBinding(DiffProperty, () => this.SetBinding(DiffProperty, nameof(CardsView.ProcessorDiff), BindingMode.OneWay));
+            SetDefaultBinding(MaxDiffProperty, () => this.SetBinding(MaxDiffProperty, nameof(CardsView.Width), BindingMode.OneWay));
+            SetDefaultBinding(SelectedIndexProperty, () => this.SetBinding(SelectedIndexProperty, nameof(CardsView.SelectedIndex), BindingMode.OneWay));
+            SetDefaultBinding(ItemsSourceProperty, () => this.SetBinding(ItemsSourceProperty, nameof(CardsView.ItemsSource), BindingMode.OneWay));
+            SetDefaultBinding(IsCyclicalProperty, () => this.SetBinding(IsCyclicalProperty, nameof(CardsView.IsCyclical), BindingMode.OneWay));
+            SetDefaultBinding(IsUserInteractionRunningProperty, () => this.SetBinding(IsUserInteractionRunningProperty, nameof(CardsView.IsUserInteractionRunning), BindingMode.OneWay));
+            SetDefaultBinding(IsAutoInteractionRunningProperty, () => this.SetBinding(IsAutoInteractionRunningProperty, nameof(CardsView.IsAutoInteractionRunning), BindingMode.OneWay));
+        }
+
+        private void SetDefaultBinding(BindableProperty property, Action setBinding)
+            => BindingManager.SetDefaultBinding(property, setBinding);
+
+        private ControlBindingManager BindingManager => _bindingManager ??= new(this);
+
+        private void SetSelectedIndexBinding(BindingMode mode)
+        {
+            switch (this.GetCardsViewBindingContextKind())
+            {
+                case CardsViewBindingContextKind.CardsView:
+                    BindingManager.TryReplaceOwnedBinding(SelectedIndexProperty, () => this.SetBinding(SelectedIndexProperty, static (CardsView source) => source.SelectedIndex, mode));
+                    break;
+                case CardsViewBindingContextKind.TypedCustomContext:
+                    BindingManager.TryReplaceOwnedBinding(SelectedIndexProperty, () => this.SetBinding(SelectedIndexProperty, static (ICardsViewBindingContext source) => source.SelectedIndex, mode));
+                    break;
+                default:
+                    SetLegacySelectedIndexBinding(mode);
+                    break;
+            }
+        }
+
+        [RequiresUnreferencedCode("Uses a legacy string-path binding for custom view models. Preserve their SelectedIndex property or implement ICardsViewBindingContext for trimmed applications.")]
+        private void SetLegacySelectedIndexBinding(BindingMode mode)
+            => BindingManager.TryReplaceOwnedBinding(SelectedIndexProperty, () => this.SetBinding(SelectedIndexProperty, nameof(CardsView.SelectedIndex), mode));
 
         protected override void OnSizeAllocated(double width, double height)
         {
@@ -314,9 +395,9 @@ namespace PanCardView.Controls
                         CommandParameter = item,
                         Command = new Command(p =>
                         {
-                            this.SetBinding(SelectedIndexProperty, nameof(CardsView.SelectedIndex), BindingMode.OneWayToSource);
+                            SetSelectedIndexBinding(BindingMode.OneWayToSource);
                             SelectedIndex = ItemsSource.FindIndex(p);
-                            this.SetBinding(SelectedIndexProperty, nameof(CardsView.SelectedIndex));
+                            SetSelectedIndexBinding(BindingMode.OneWay);
                         })
                     });
                     ItemsStackLayout.Children.Add(view);

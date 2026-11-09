@@ -17,7 +17,7 @@ namespace PanCardViewSample.Views
 				ItemTemplate = new ListTemplateSelector()
 			};
 
-			carousel.SetBinding(CardsView.ItemsSourceProperty, nameof(CarouselSampleListViewModel.Cards));
+			carousel.SetBinding(CardsView.ItemsSourceProperty, static (CarouselSampleListViewModel viewModel) => viewModel.Cards, BindingMode.OneWay);
 
 			Content = carousel;
 		}
@@ -53,13 +53,13 @@ namespace PanCardViewSample.Views
 					{
 						TextColor = Colors.White
 					};
-					label.SetBinding(Label.TextProperty, nameof(ListItemModel.Text));
+					label.SetBinding(Label.TextProperty, static (ListItemModel item) => item.Text, BindingMode.OneWay);
 
 					var content = new ContentView();
 					content.Content = label;
 
 					var tapGesture = new TapGestureRecognizer();
-					tapGesture.SetBinding(TapGestureRecognizer.CommandProperty, nameof(ListItemModel.Command));
+					tapGesture.SetBinding(TapGestureRecognizer.CommandProperty, static (ListItemModel item) => item.Command, BindingMode.OneWay);
 					content.GestureRecognizers.Add(tapGesture);
 
 					return new ViewCell
@@ -68,7 +68,7 @@ namespace PanCardViewSample.Views
 					};
 				})
 			};
-			list.SetBinding(ItemsView<Cell>.ItemsSourceProperty, nameof(ListCardModel.Items));
+			list.SetBinding(ItemsView<Cell>.ItemsSourceProperty, static (ListCardModel card) => card.Items, BindingMode.OneWay);
 
 			return new ContentView
 			{

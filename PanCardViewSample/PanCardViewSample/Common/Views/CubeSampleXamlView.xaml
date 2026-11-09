@@ -6,6 +6,7 @@
     xmlns:cards="clr-namespace:PanCardView;assembly=PanCardView"
     xmlns:controls="clr-namespace:PanCardView.Controls;assembly=PanCardView"
     x:Class="PanCardViewSample.Views.CubeSampleXamlView"
+    x:DataType="viewModels:CardsSampleViewModel"
     BackgroundColor="Black"
     Title="Cube Xaml">
 
@@ -21,7 +22,7 @@
                 HeightRequest="40"
                 BindingContext="{x:Reference cube}">
                 <controls:TabsControl.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate x:DataType="viewModels:CardSampleItem">
                         <Label HorizontalTextAlignment="Center"
                                VerticalTextAlignment="Center"
                                HorizontalOptions="FillAndExpand"
@@ -41,7 +42,7 @@
                 ItemsSource="{Binding Items}"
                 SelectedIndex="{Binding CurrentIndex}">
             <cards:CubeView.ItemTemplate>
-                <DataTemplate>
+                <DataTemplate x:DataType="viewModels:CardSampleItem">
                     <ContentView>
                         <Frame 
                             VerticalOptions="Center"

@@ -8,6 +8,7 @@
     xmlns:proc="clr-namespace:PanCardView.Processors;assembly=PanCardView"
     xmlns:viewModels="clr-namespace:PanCardViewSample.ViewModels"
     Title="Carousel Indicator Xaml"
+    x:DataType="viewModels:CardsSampleViewModel"
     BackgroundColor="Black">
 
     <ContentPage.BindingContext>

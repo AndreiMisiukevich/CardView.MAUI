@@ -7,6 +7,7 @@
     xmlns:controls="clr-namespace:PanCardView.Controls;assembly=PanCardView"
     xmlns:proc="clr-namespace:PanCardView.Processors;assembly=PanCardView"
     x:Class="PanCardViewSample.Views.CarouselSampleXamlView"
+    x:DataType="viewModels:CardsSampleViewModel"
     BackgroundColor="Black"
     Title="Carousel Xaml">
 
@@ -24,7 +25,7 @@
         </x:Arguments>
 
         <cards:CarouselView.ItemTemplate>
-            <DataTemplate>
+            <DataTemplate x:DataType="viewModels:CardSampleItem">
                 <ContentView>
                     <Frame 
                         VerticalOptions="Center"

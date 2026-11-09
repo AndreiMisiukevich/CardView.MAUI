@@ -14,13 +14,13 @@ namespace PanCardViewSample.ViewModels
 
 		public CardsSampleViewModel()
 		{
-			Items = new ObservableCollection<object>
+			Items = new ObservableCollection<CardSampleItem>
 			{
-				new { Source = CreateSource(), Ind = _imageCount++, Color = Colors.Red, Title = "First" },
-				new { Source = CreateSource(), Ind = _imageCount++, Color = Colors.Green, Title = "Second" },
-				new { Source = CreateSource(), Ind = _imageCount++, Color = Colors.Gold, Title = "Long Title" },
-				new { Source = CreateSource(), Ind = _imageCount++, Color = Colors.Silver, Title = "4" },
-				new { Source = CreateSource(), Ind = _imageCount++, Color = Colors.Blue, Title = "5th" }
+				new CardSampleItem(CreateSource(), _imageCount++, Colors.Red, "First"),
+				new CardSampleItem(CreateSource(), _imageCount++, Colors.Green, "Second"),
+				new CardSampleItem(CreateSource(), _imageCount++, Colors.Gold, "Long Title"),
+				new CardSampleItem(CreateSource(), _imageCount++, Colors.Silver, "4"),
+				new CardSampleItem(CreateSource(), _imageCount++, Colors.Blue, "5th")
 			};
 
 			PanPositionChangedCommand = new Command(v =>
@@ -73,7 +73,7 @@ namespace PanCardViewSample.ViewModels
 
         public bool IsUserInteractionRunning { get; set; }
 
-        public ObservableCollection<object> Items { get; }
+		public ObservableCollection<CardSampleItem> Items { get; }
 
 		private string CreateSource()
 		{

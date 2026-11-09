@@ -22,20 +22,20 @@ namespace PanCardViewSample.Views
 				Text = "**Prev**",
 				CommandParameter = false
 			};
-			prevItem.SetBinding(MenuItem.CommandProperty, nameof(CardsSampleViewModel.PanPositionChangedCommand));
+			prevItem.SetBinding(MenuItem.CommandProperty, static (CardsSampleViewModel viewModel) => viewModel.PanPositionChangedCommand, BindingMode.OneWay);
 
 			var nextItem = new ToolbarItem
 			{
 				Text = "**Next**",
 				CommandParameter = true
 			};
-			nextItem.SetBinding(MenuItem.CommandProperty, nameof(CardsSampleViewModel.PanPositionChangedCommand));
+			nextItem.SetBinding(MenuItem.CommandProperty, static (CardsSampleViewModel viewModel) => viewModel.PanPositionChangedCommand, BindingMode.OneWay);
 
 			ToolbarItems.Add(prevItem);
 			ToolbarItems.Add(nextItem);
 
-			cardsView.SetBinding(CardsView.ItemsSourceProperty, nameof(CardsSampleViewModel.Items));
-			cardsView.SetBinding(CardsView.SelectedIndexProperty, nameof(CardsSampleViewModel.CurrentIndex));
+			cardsView.SetBinding(CardsView.ItemsSourceProperty, static (CardsSampleViewModel viewModel) => viewModel.Items, BindingMode.OneWay);
+			cardsView.SetBinding(CardsView.SelectedIndexProperty, static (CardsSampleViewModel viewModel) => viewModel.CurrentIndex, BindingMode.TwoWay);
 
 			Title = "Cards View";
 
@@ -49,7 +49,7 @@ namespace PanCardViewSample.Views
 				Margin = new Thickness(0, 0, 0, 10)
 			};
 
-			removeButton.SetBinding(Button.CommandProperty, nameof(CardsSampleViewModel.RemoveCurrentItemCommand));
+			removeButton.SetBinding(Button.CommandProperty, static (CardsSampleViewModel viewModel) => viewModel.RemoveCurrentItemCommand, BindingMode.OneWay);
 
 			AbsoluteLayout.SetLayoutFlags(removeButton, AbsoluteLayoutFlags.PositionProportional);
 			AbsoluteLayout.SetLayoutBounds(removeButton, new Rect(.5, 1, 150, 40));

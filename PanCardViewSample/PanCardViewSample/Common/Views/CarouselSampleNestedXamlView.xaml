@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewModels="clr-namespace:PanCardViewSample.ViewModels"
              xmlns:cards="clr-namespace:PanCardView;assembly=PanCardView"
-             x:Class="PanCardViewSample.Views.CarouselSampleNestedXamlView">
+             x:Class="PanCardViewSample.Views.CarouselSampleNestedXamlView"
+             x:DataType="viewModels:CarouselSampleNestedViewModel">
 
     <ContentPage.Resources>
         <Style x:Key="CarouselStyle" TargetType="cards:CarouselView">
@@ -19,7 +20,7 @@
             <Setter Property="VerticalTextAlignment" Value="Center" />
         </Style>
 
-        <DataTemplate x:Key="NestedItemTemplate">
+        <DataTemplate x:Key="NestedItemTemplate" x:DataType="viewModels:CarouselNestedImageItem">
             <AbsoluteLayout BackgroundColor="{Binding Color}">
                 <Image Source="{Binding Source}"
                                      Aspect="AspectFill"
@@ -35,7 +36,7 @@
             </AbsoluteLayout>
         </DataTemplate>
 
-        <DataTemplate x:Key="TopItemTemplate">
+        <DataTemplate x:Key="TopItemTemplate" x:DataType="viewModels:CarouselNestedItem">
             <AbsoluteLayout BackgroundColor="{Binding Color}">
                 <cards:CarouselView Style="{StaticResource CarouselStyle}"
                                     ItemTemplate="{StaticResource NestedItemTemplate}"

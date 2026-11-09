@@ -6,9 +6,16 @@ namespace PanCardViewSample.ViewModels
 	{
 		public CarouselSampleScrollViewModel()
 		{
-			Items = new ObservableCollection<object>(Enumerable.Range(1, 3).Select(i => new { Number = i }).ToArray());
+			Items = new ObservableCollection<ScrollSampleItem>(Enumerable.Range(1, 3).Select(i => new ScrollSampleItem(i)));
 		}
 
-		public ObservableCollection<object> Items { get; }
+		public ObservableCollection<ScrollSampleItem> Items { get; }
+	}
+
+	public sealed class ScrollSampleItem
+	{
+		public ScrollSampleItem(int number) => Number = number;
+
+		public int Number { get; }
 	}
 }
